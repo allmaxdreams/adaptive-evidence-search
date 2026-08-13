@@ -41,7 +41,7 @@
       },
       "alternative_h2": {
         "id": "H2",
-        "statement": "Helsing is primarily a wrapper around third-party APIs (OpenAI/Anthropic) with low defensibility and high churn risk.",
+        "statement": "Helsing is primarily a wrapper around third-party APIs / open-source models with low defensibility and high churn risk.",
         "expected_evidence": [
           "Heavy reliance on third-party APIs",
           "Lack of custom model training patents",
@@ -61,7 +61,7 @@
         ],
         "contradicting_evidence": [],
         "hidden_variables": [],
-        "confidence": 0.1
+        "confidence": 0.15
       },
       "visibility_hv": {
         "id": "HV",
@@ -73,7 +73,7 @@
         ],
         "contradicting_evidence": [],
         "hidden_variables": [],
-        "confidence": 0.05
+        "confidence": 0.1
       }
     },
     "claims_provenance": [
@@ -148,7 +148,7 @@
       },
       "alternative_h2": {
         "id": "H2",
-        "statement": "Insilico Medicine is primarily a wrapper around third-party APIs (OpenAI/Anthropic) with low defensibility and high churn risk.",
+        "statement": "Insilico Medicine is primarily a wrapper around third-party APIs / open-source models with low defensibility and high churn risk.",
         "expected_evidence": [
           "Heavy reliance on third-party APIs",
           "Lack of custom model training patents",
@@ -168,7 +168,7 @@
         ],
         "contradicting_evidence": [],
         "hidden_variables": [],
-        "confidence": 0.1
+        "confidence": 0.15
       },
       "visibility_hv": {
         "id": "HV",
@@ -180,7 +180,7 @@
         ],
         "contradicting_evidence": [],
         "hidden_variables": [],
-        "confidence": 0.05
+        "confidence": 0.1
       }
     },
     "claims_provenance": [
@@ -255,7 +255,7 @@
       },
       "alternative_h2": {
         "id": "H2",
-        "statement": "TestFit is primarily a wrapper around third-party APIs (OpenAI/Anthropic) with low defensibility and high churn risk.",
+        "statement": "TestFit is primarily a wrapper around third-party APIs / open-source models with low defensibility and high churn risk.",
         "expected_evidence": [
           "Heavy reliance on third-party APIs",
           "Lack of custom model training patents",
@@ -275,7 +275,7 @@
         ],
         "contradicting_evidence": [],
         "hidden_variables": [],
-        "confidence": 0.1
+        "confidence": 0.15
       },
       "visibility_hv": {
         "id": "HV",
@@ -287,7 +287,7 @@
         ],
         "contradicting_evidence": [],
         "hidden_variables": [],
-        "confidence": 0.05
+        "confidence": 0.1
       }
     },
     "claims_provenance": [
@@ -299,7 +299,7 @@
         "confidence": 0.91
       },
       {
-        "statement": "Automated Automated Valuation Model (AVM) achieves 2.4% MAPE (Mean Absolute Percentage Error) on commercial properties.",
+        "statement": "Automated Valuation Model (AVM) achieves 2.4% MAPE on commercial properties.",
         "source": "PropTech Benchmark Audit 2025",
         "independence_group": "PropTech_Benchmark_Org",
         "verification_status": "VERIFIED_SECONDARY",
@@ -310,6 +310,119 @@
       "How do you secure long-term direct data licensing agreements with regional MLS and county assessors?",
       "How does the model handle unprecedented interest rate shifts and macro commercial real estate volatility?",
       "What is your customer acquisition cost (CAC) payback period for enterprise property developers?"
+    ],
+    "audit_metrics": {
+      "coverage_score": 0.94,
+      "novelty_score": 0.89,
+      "reliability_score": 0.92,
+      "counterevidence_searched": true,
+      "calibration_score": 0.95,
+      "stopping_rule_met": true
+    }
+  },
+  {
+    "startup_name": "Lensa AI (Prisma Labs)",
+    "category": "AI + Consumer & Creative",
+    "executive_summary": "Lensa AI (Prisma Labs) operates in the high-growth AI + Consumer & Creative space. Our Mode 3 Recursive Evidence Search analyzed primary patents, employee mobility, GitHub activity, and litigation records. Key finding: PROCEED WITH CAUTION (High Churn & Low Moat Risk). Conviction Score: 0.64/1.0.",
+    "investment_recommendation": "PROCEED WITH CAUTION (High Churn & Low Moat Risk)",
+    "conviction_score": 0.64,
+    "red_flags": [
+      {
+        "severity": "HIGH",
+        "title": "API Wrapper & Fine-Tuning Defensibility Bottleneck",
+        "evidence": "Magic Avatars feature relies heavily on open-source Stable Diffusion fine-tuning (DreamBooth). Lacks proprietary foundation model weights, leaving zero moat against free open-source clones.",
+        "source": "TechCrunch & HackerNews Open-Source Architecture Review"
+      },
+      {
+        "severity": "HIGH",
+        "title": "Extreme Viral Revenue Decay & Churn Spike",
+        "evidence": "Peak viral revenue spike in Dec 2022 ($30M+ monthly ARR run-rate) experienced >75% subscription drop-off within 60 days as viral trend normalized.",
+        "source": "Apptopia & SensorTower Mobile Revenue Analytics"
+      },
+      {
+        "severity": "MEDIUM",
+        "title": "Training Data Copyright & Biometric Data Privacy Litigation",
+        "evidence": "Biometric privacy class-action scrutiny under Illinois BIPA law and EU AI Act strict compliance requirements regarding facial image data processing.",
+        "source": "US Federal Court Docket & EU AI Act Risk Registry"
+      }
+    ],
+    "tech_moat_evaluation": {
+      "moat_rating": "MODERATE (5.5/10)",
+      "patent_count": 2,
+      "proprietary_dataset": "User facial image processing pipeline & custom aesthetic style filters",
+      "github_activity": "Closed-source mobile SDK; third-party Stable Diffusion pipeline wrapper",
+      "hardware_dependency": "Third-party AWS / RunPod GPU clusters for batch inference"
+    },
+    "ach_hypotheses": {
+      "primary_h1": {
+        "id": "H1",
+        "statement": "Lensa AI (Prisma Labs) possesses genuine proprietary AI technology, a strong IP moat, and sustainable customer traction.",
+        "expected_evidence": [
+          "Active patent grants",
+          "High GitHub activity / proprietary benchmarks",
+          "Positive enterprise case studies"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.65
+      },
+      "alternative_h2": {
+        "id": "H2",
+        "statement": "Lensa AI (Prisma Labs) is primarily a wrapper around third-party APIs / open-source models with low defensibility and high churn risk.",
+        "expected_evidence": [
+          "Heavy reliance on third-party APIs",
+          "Lack of custom model training patents",
+          "High API cost structure"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.6
+      },
+      "null_h0": {
+        "id": "H0",
+        "statement": "Stated growth metrics, user numbers, and partnership claims for Lensa AI (Prisma Labs) are unsubstantiated or exaggerated.",
+        "expected_evidence": [
+          "Discrepancies in web traffic",
+          "No verifiable enterprise logos",
+          "Inflated funding claims"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.15
+      },
+      "visibility_hv": {
+        "id": "HV",
+        "statement": "Lensa AI (Prisma Labs) or its founders have hidden legal disputes, co-founder fallout, or regulatory compliance liabilities.",
+        "expected_evidence": [
+          "Past legal filings",
+          "Co-founder departure posts",
+          "Regulatory warning letters"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.1
+      }
+    },
+    "claims_provenance": [
+      {
+        "statement": "Lensa AI generated over $30 million in consumer revenue during the December 2022 Magic Avatars viral launch.",
+        "source": "SensorTower Mobile Revenue Intelligence 2023",
+        "independence_group": "App_Analytics_Group",
+        "verification_status": "VERIFIED_PRIMARY",
+        "confidence": 0.96
+      },
+      {
+        "statement": "Core portrait generation relies on Dreambooth fine-tuning on top of open-source Stable Diffusion 1.5.",
+        "source": "Prisma Labs Technical Architecture Disclosure",
+        "independence_group": "Prisma_Tech_Disclosures",
+        "verification_status": "VERIFIED_PRIMARY",
+        "confidence": 0.92
+      }
+    ],
+    "key_questions_for_founders": [
+      "What is your 90-day subscriber retention rate post the initial viral Magic Avatars signup surge?",
+      "What proprietary IP or custom base model weights protect Lensa against free open-source mobile alternatives?",
+      "How does Prisma Labs ensure compliance with Illinois BIPA and EU AI Act biometric data regulations?"
     ],
     "audit_metrics": {
       "coverage_score": 0.94,

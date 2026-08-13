@@ -1,9 +1,10 @@
 """
 Showcase Lead Magnet Generator for VC Due Diligence Copilot.
-Generates 3 full Mode 3 Due Diligence reports for:
+Generates 4 full Mode 3 Due Diligence reports for:
 1. AI + MilTech: Helsing
 2. AI + Pharma: Insilico Medicine
 3. AI + PropTech: TestFit
+4. AI + Consumer & Creative: Lensa AI (Prisma Labs)
 """
 
 import asyncio
@@ -43,13 +44,21 @@ async def generate_showcases():
             founders=["Clifton Harness", "Ryan Griege"],
             stated_mission="Automating real estate site planning, spatial 3D feasibility studies, and commercial property valuation.",
             target_market="Real Estate Developers, Architects, Urban Planners, Property Funds"
+        ),
+        StartupProfile(
+            name="Lensa AI (Prisma Labs)",
+            category="AI + Consumer & Creative",
+            website="https://prisma-labs.co/lensa",
+            founders=["Andrey Usoltsev", "Alexey Moiseenkov"],
+            stated_mission="AI-powered mobile photo/video editing and portrait avatar generation.",
+            target_market="Consumer Mobile Users, Creators, Digital Artists"
         )
     ]
 
     results = []
 
     print("=========================================================================")
-    print("GENERATING SHOWCASE LEAD MAGNET REPORTS FOR LINKEDIN MARKETING")
+    print("GENERATING 4 SHOWCASE LEAD MAGNET REPORTS FOR LINKEDIN MARKETING")
     print("=========================================================================\n")
 
     for startup in startups:
@@ -65,7 +74,7 @@ async def generate_showcases():
         json.dump(results, f, indent=2, ensure_ascii=False)
 
     print(f"\n=========================================================================")
-    print(f"SUCCESSFULLY GENERATED 3 SHOWCASE REPORTS AT: {json_path}")
+    print(f"SUCCESSFULLY GENERATED 4 SHOWCASE REPORTS AT: {json_path}")
     print(f"=========================================================================\n")
 
 
