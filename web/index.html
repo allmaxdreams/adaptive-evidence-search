@@ -3,20 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Adaptive Evidence Search — VC Due Diligence Copilot</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>Adaptive Evidence Search — VC Due Diligence Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-main: #FFFFFF;
       --bg-surface: #FAFAFA;
       --bg-card: #FFFFFF;
-      --bg-card-hover: #F4F4F5;
       --border-dim: #E4E4E7;
       --border-bright: #18181B;
       --text-black: #09090B;
       --text-muted: #71717A;
       --text-dim: #A1A1AA;
-      --accent-black: #09090B;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,62 +29,45 @@
 
     /* HEADER */
     header {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(16px);
+      background: #FFFFFF;
       border-bottom: 1px solid var(--border-dim);
       position: sticky;
       top: 0;
       z-index: 100;
-      padding: 18px 40px;
+      padding: 16px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 900;
-      font-size: 1.15rem;
-      color: var(--text-black);
-      letter-spacing: -0.03em;
-    }
-
-    .logo-badge {
-      background: var(--text-black);
-      color: var(--bg-main);
-      font-size: 0.7rem;
-      padding: 3px 8px;
-      border-radius: 4px;
       font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      font-size: 1.1rem;
+      color: var(--text-black);
+      letter-spacing: -0.02em;
     }
 
     .header-actions {
       display: flex;
-      gap: 14px;
+      gap: 12px;
     }
 
     .btn {
       background: var(--text-black);
       color: var(--bg-main);
       border: 1px solid var(--text-black);
-      padding: 10px 22px;
+      padding: 9px 20px;
       border-radius: 6px;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
       font-size: 0.88rem;
-      transition: all 0.2s ease;
+      transition: background 0.2s;
       text-decoration: none;
       display: inline-block;
     }
 
     .btn:hover {
       background: #27272A;
-      border-color: #27272A;
-      transform: translateY(-1px);
     }
 
     .btn-outline {
@@ -101,92 +82,72 @@
     }
 
     main {
-      max-width: 1240px;
+      max-width: 1200px;
       margin: 40px auto;
       padding: 0 24px;
     }
 
-    /* HERO SALES PART */
+    /* HERO SECTION */
     .hero-section {
-      text-align: center;
-      padding: 60px 20px 48px;
+      text-align: left;
+      padding: 48px 0 40px;
       border-bottom: 1px solid var(--border-dim);
       margin-bottom: 48px;
     }
 
-    .hero-tag {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-      font-weight: 800;
-      border: 1px solid var(--border-dim);
-      display: inline-block;
-      padding: 4px 14px;
-      border-radius: 20px;
-      background: var(--bg-surface);
-    }
-
     .hero-headline {
-      font-size: 3.2rem;
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      line-height: 1.12;
-      margin-bottom: 20px;
-      max-width: 980px;
-      margin-left: auto;
-      margin-right: auto;
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      max-width: 820px;
       color: var(--text-black);
     }
 
     .hero-subheadline {
       color: var(--text-muted);
-      font-size: 1.18rem;
-      max-width: 780px;
-      margin: 0 auto 36px;
+      font-size: 1.15rem;
+      max-width: 720px;
+      margin-bottom: 28px;
       font-weight: 400;
       line-height: 1.6;
     }
 
     /* COMPARISON TABLE SECTION */
     .comparison-section {
-      margin: 60px 0;
+      margin: 48px 0;
       background: var(--bg-surface);
       border: 1px solid var(--border-dim);
-      border-radius: 16px;
-      padding: 40px;
-    }
-
-    .comparison-title-box {
-      text-align: center;
-      margin-bottom: 36px;
+      border-radius: 12px;
+      padding: 36px;
     }
 
     .comparison-table {
       width: 100%;
       border-collapse: collapse;
       background: var(--bg-card);
-      border-radius: 12px;
+      border-radius: 8px;
       overflow: hidden;
       border: 1px solid var(--border-dim);
+      margin-top: 20px;
     }
 
     .comparison-table th, .comparison-table td {
-      padding: 18px 24px;
+      padding: 16px 20px;
       text-align: left;
       border-bottom: 1px solid var(--border-dim);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       vertical-align: top;
     }
 
     .comparison-table th {
       background: #18181B;
       color: #FFFFFF;
-      font-weight: 800;
-      font-size: 0.85rem;
+      font-weight: 700;
+      font-size: 0.82rem;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
     }
 
     .comparison-table td.col-standard {
@@ -196,33 +157,12 @@
 
     .comparison-table td.col-our {
       background: #FFFFFF;
-      font-weight: 600;
+      font-weight: 500;
       color: var(--text-black);
       border-left: 2px solid var(--text-black);
     }
 
-    .verdict-badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      margin-top: 6px;
-    }
-
-    .verdict-badge.poor {
-      background: #F4F4F5;
-      color: #71717A;
-      border: 1px solid #E4E4E7;
-    }
-
-    .verdict-badge.winner {
-      background: #09090B;
-      color: #FFFFFF;
-    }
-
-    /* SALES ADVANTAGE GRID */
+    /* VALUE GRID */
     .sales-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -233,31 +173,20 @@
     .sales-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-dim);
-      border-radius: 12px;
-      padding: 28px;
-      transition: all 0.2s;
-    }
-
-    .sales-card:hover {
-      border-color: var(--border-bright);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    .sales-card-icon {
-      font-size: 1.8rem;
-      margin-bottom: 16px;
+      border-radius: 10px;
+      padding: 24px;
     }
 
     .sales-card-title {
-      font-size: 1.1rem;
-      font-weight: 800;
-      margin-bottom: 10px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
       letter-spacing: -0.01em;
     }
 
     .sales-card-desc {
       color: var(--text-muted);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       line-height: 1.6;
     }
 
@@ -277,8 +206,8 @@
     .price-card {
       background: var(--bg-card);
       border: 1px solid var(--border-dim);
-      border-radius: 12px;
-      padding: 32px;
+      border-radius: 10px;
+      padding: 28px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -287,46 +216,42 @@
     .price-card.featured {
       border: 2px solid var(--text-black);
       background: var(--bg-surface);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
     }
 
     .price-title {
-      font-size: 1.2rem;
-      font-weight: 800;
-      margin-bottom: 8px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 6px;
     }
 
     .price-amount {
-      font-size: 2.4rem;
-      font-weight: 900;
-      margin: 16px 0;
-      letter-spacing: -0.03em;
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin: 14px 0;
+      letter-spacing: -0.02em;
     }
 
     .price-amount span {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--text-muted);
       font-weight: 400;
     }
 
     .price-features {
       list-style: none;
-      margin: 20px 0 28px;
+      margin: 16px 0 24px;
       color: var(--text-muted);
-      font-size: 0.88rem;
+      font-size: 0.85rem;
     }
 
     .price-features li {
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      margin-bottom: 8px;
     }
 
     /* TAB SELECTOR FOR SHOWCASE STARTUPS */
     .showcase-header {
       margin-top: 40px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
@@ -334,27 +259,23 @@
 
     .selector-bar {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       background: var(--bg-surface);
-      padding: 6px;
-      border-radius: 10px;
+      padding: 4px;
+      border-radius: 8px;
       border: 1px solid var(--border-dim);
     }
 
     .tab-btn {
-      flex: 1;
-      padding: 12px 18px;
+      padding: 10px 16px;
       background: transparent;
       border: none;
       color: var(--text-muted);
-      font-weight: 700;
-      font-size: 0.88rem;
+      font-weight: 600;
+      font-size: 0.85rem;
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
       white-space: nowrap;
     }
 
@@ -367,105 +288,104 @@
     .card {
       background: var(--bg-card);
       border: 1px solid var(--border-dim);
-      border-radius: 12px;
-      padding: 32px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+      border-radius: 10px;
+      padding: 28px;
+      margin-bottom: 20px;
     }
 
     .summary-grid {
       display: grid;
       grid-template-columns: 2fr 1fr;
-      gap: 32px;
+      gap: 28px;
     }
 
     .startup-title {
-      font-size: 2.2rem;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      margin-bottom: 8px;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
 
     .category-tag {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-black);
       background: var(--bg-surface);
-      padding: 4px 12px;
+      padding: 3px 10px;
       border-radius: 4px;
       border: 1px solid var(--border-dim);
-      font-weight: 700;
+      font-weight: 600;
     }
 
     .exec-summary {
       color: var(--text-muted);
-      font-size: 1rem;
-      line-height: 1.7;
-      margin-top: 16px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-top: 12px;
     }
 
     .recommendation-box {
       background: var(--bg-surface);
-      border: 1px solid var(--border-bright);
-      padding: 24px;
-      border-radius: 10px;
+      border: 1px solid var(--border-dim);
+      padding: 20px;
+      border-radius: 8px;
       text-align: center;
     }
 
     .rec-label {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       color: var(--text-muted);
-      margin-bottom: 6px;
-      font-weight: 800;
+      margin-bottom: 4px;
+      font-weight: 700;
     }
 
     .rec-value {
-      font-size: 1.1rem;
-      font-weight: 900;
+      font-size: 1rem;
+      font-weight: 800;
       color: var(--text-black);
     }
 
     .conviction-score {
-      font-size: 3rem;
-      font-weight: 900;
-      margin-top: 8px;
-      letter-spacing: -0.04em;
+      font-size: 2.6rem;
+      font-weight: 800;
+      margin-top: 6px;
+      letter-spacing: -0.03em;
       color: var(--text-black);
     }
 
     .section-title {
-      font-size: 1.25rem;
-      font-weight: 900;
-      margin-bottom: 20px;
-      letter-spacing: -0.02em;
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
     }
 
     .red-flag-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-dim);
-      border-left: 4px solid var(--text-black);
-      border-radius: 6px;
-      padding: 18px 22px;
-      margin-bottom: 14px;
+      border-left: 3px solid var(--text-black);
+      border-radius: 4px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
     }
 
     .red-flag-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .severity-badge {
       background: var(--text-black);
       color: var(--bg-main);
-      font-size: 0.68rem;
-      font-weight: 900;
-      padding: 2px 8px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 2px 6px;
       border-radius: 3px;
       letter-spacing: 0.05em;
     }
@@ -476,42 +396,41 @@
     }
 
     .red-flag-title {
-      font-weight: 800;
+      font-weight: 700;
       color: var(--text-black);
-      font-size: 1.02rem;
+      font-size: 0.95rem;
     }
 
     .table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 12px;
+      margin-top: 10px;
     }
 
     .table th, .table td {
-      padding: 14px 18px;
+      padding: 12px 16px;
       text-align: left;
       border-bottom: 1px solid var(--border-dim);
-      font-size: 0.88rem;
+      font-size: 0.85rem;
     }
 
     .table th {
       background: var(--bg-surface);
       color: var(--text-muted);
-      font-weight: 800;
+      font-weight: 700;
       text-transform: uppercase;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       letter-spacing: 0.05em;
     }
 
     .source-tag {
       font-family: monospace;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: var(--text-black);
       background: var(--bg-surface);
-      padding: 3px 8px;
+      padding: 2px 6px;
       border-radius: 4px;
       border: 1px solid var(--border-dim);
-      font-weight: 600;
     }
 
     .question-list {
@@ -519,24 +438,13 @@
     }
 
     .question-item {
-      padding: 14px 18px;
+      padding: 12px 16px;
       background: var(--bg-surface);
       border-left: 3px solid var(--text-black);
-      margin-bottom: 10px;
-      border-radius: 0 6px 6px 0;
-      font-weight: 600;
-      font-size: 0.92rem;
-    }
-
-    .badge-v2 {
-      font-family: monospace;
-      font-size: 0.72rem;
-      background: var(--text-black);
-      color: var(--bg-main);
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-weight: 800;
-      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      border-radius: 0 4px 4px 0;
+      font-weight: 500;
+      font-size: 0.88rem;
     }
 
     /* LEAD CAPTURE FORM MODAL */
@@ -544,8 +452,7 @@
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.5);
       z-index: 1000;
       align-items: center;
       justify-content: center;
@@ -554,33 +461,32 @@
     .modal-card {
       background: var(--bg-main);
       border: 1px solid var(--border-bright);
-      border-radius: 16px;
-      padding: 40px;
-      max-width: 500px;
+      border-radius: 12px;
+      padding: 36px;
+      max-width: 480px;
       width: 90%;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .form-label {
       display: block;
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-bottom: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 6px;
       color: var(--text-muted);
     }
 
     .form-input {
       width: 100%;
-      padding: 12px 16px;
+      padding: 10px 14px;
       background: var(--bg-surface);
       border: 1px solid var(--border-dim);
       color: var(--text-black);
       border-radius: 6px;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
     .form-input:focus {
@@ -591,10 +497,10 @@
     footer {
       text-align: center;
       color: var(--text-muted);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       margin-top: 60px;
       border-top: 1px solid var(--border-dim);
-      padding-top: 40px;
+      padding-top: 32px;
     }
   </style>
 </head>
@@ -602,134 +508,97 @@
 
   <!-- HEADER -->
   <header>
-    <div class="logo">
-      <span>🛡️ ADAPTIVE EVIDENCE SEARCH</span>
-      <span class="logo-badge">VC COPILOT</span>
-    </div>
+    <div class="logo">ADAPTIVE EVIDENCE SEARCH</div>
     <div class="header-actions">
       <button class="btn btn-outline" onclick="openModal()">Request Custom Report</button>
-      <a href="#pricing" class="btn">Get Started ($299/mo)</a>
+      <a href="#pricing" class="btn">Get Access</a>
     </div>
   </header>
 
   <main>
-    <!-- HERO SALES SECTION -->
+    <!-- HERO SECTION -->
     <section class="hero-section">
-      <div class="hero-tag">Zero AI Hallucinations • Institutional Grade Due Diligence</div>
-      <h1 class="hero-headline">Spot Hidden Startup Red Flags & Tech Moat in 3 Minutes, Not 30 Hours.</h1>
+      <h1 class="hero-headline">Automated Due Diligence for Venture Capital and M&A Teams</h1>
       <p class="hero-subheadline">
-        Deliver bulletproof Due Diligence briefs in 3 minutes. Our intelligence platform independently verifies primary patents, export compliance status, court records, employee mobility, and API dependencies so you never invest in an overhyped wrapper.
+        Independently verify primary patents, export compliance status, court dockets, employee mobility, and API dependencies to evaluate early-stage and growth technology ventures.
       </p>
       <div>
-        <button class="btn" style="padding: 14px 32px; font-size: 1rem;" onclick="openModal()">⚡ Order Free Custom Report</button>
+        <button class="btn" style="padding: 12px 28px; font-size: 0.95rem;" onclick="openModal()">Request Custom Report</button>
       </div>
     </section>
 
-    <!-- TARGET AUDIENCE VALUE PROPOSITION GRID -->
+    <!-- VALUE PROPOSITION GRID -->
     <section class="sales-grid">
       <div class="sales-card">
-        <div class="sales-card-icon">🎯</div>
-        <div class="sales-card-title">VC Associates & Analysts</div>
+        <div class="sales-card-title">Primary Source Verification</div>
         <div class="sales-card-desc">
-          Scan 50 Pitch Decks per week without manual burnout. Instantly separate real proprietary AI tech from simple OpenAI wrappers.
+          Direct cross-referencing against patent registries, regulatory dockets, and technical repositories instead of secondary press coverage.
         </div>
       </div>
       <div class="sales-card">
-        <div class="sales-card-icon">🛡️</div>
-        <div class="sales-card-title">Private Equity Partners</div>
+        <div class="sales-card-title">Risk & Vulnerability Audits</div>
         <div class="sales-card-desc">
-          Catch hidden ITAR export bottlenecks, IP litigation disputes, and customer churn spikes before signing binding Term Sheets.
+          Identifies unlisted legal disputes, customer concentration, export control restrictions, and third-party API reliance.
         </div>
       </div>
       <div class="sales-card">
-        <div class="sales-card-icon">⚡</div>
-        <div class="sales-card-title">99.5% Cost Reduction</div>
+        <div class="sales-card-title">Structured Deal Briefs</div>
         <div class="sales-card-desc">
-          $2.40 AI compute cost per report vs $500 junior analyst salary hours. 100% provenance tracking with primary source links.
+          Generates standardized evidence reports with explicit source lineage and confidence metrics for Investment Committees.
         </div>
       </div>
     </section>
 
-    <!-- BENCHMARK COMPARISON SECTION: STANDARD AI VS ADAPTIVE ENGINE -->
+    <!-- COMPARISON TABLE SECTION -->
     <section class="comparison-section">
-      <div class="comparison-title-box">
-        <div class="hero-tag">Benchmark Audit</div>
-        <h2 style="font-size: 2.2rem; font-weight: 900; letter-spacing: -0.03em;">Standard AI Search vs. Our Intelligence Engine</h2>
-        <p style="color: var(--text-muted); font-size: 1rem; max-width: 720px; margin: 8px auto 0;">
-          Why conventional AI chatbots (ChatGPT, Perplexity) fail at critical financial Due Diligence, and how our evidence-provenance architecture guarantees precision.
-        </p>
-      </div>
+      <h2 style="font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em;">Data Verification Capabilities</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 4px;">
+        Comparison of standard web search methods versus primary evidence evaluation:
+      </p>
 
       <table class="comparison-table">
         <thead>
           <tr>
             <th style="width: 25%;">Evaluation Dimension</th>
-            <th style="width: 35%;">Standard AI Search (ChatGPT, Perplexity)</th>
-            <th style="width: 40%;">Adaptive Evidence Engine (Our Approach)</th>
+            <th style="width: 37%;">Standard Web Search</th>
+            <th style="width: 38%;">Adaptive Evidence Engine</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Information Traversal</strong></td>
+            <td><strong>Data Sources</strong></td>
             <td class="col-standard">
-              <strong>Superficial Blog Scraping</strong><br>
-              Scrapes top Google/Bing results & marketing blogs. Misses primary patent grants, ITAR registries, employee mobility, or court records.
-              <br><span class="verdict-badge poor">Rating: 4.0 / 10</span>
+              Public search engine results, marketing blogs, and press releases.
             </td>
             <td class="col-our">
-              <strong>100% Deep Primary Asset Coverage</strong><br>
-              Delivers complete multi-layer visibility into primary patents, export compliance status, court dockets, and closed GitHub repositories.
-              <br><span class="verdict-badge winner">Rating: 9.8 / 10 • WINNER</span>
+              Primary patent grants, export registries, court dockets, code repositories, and employee mobility data.
             </td>
           </tr>
           <tr>
-            <td><strong>Red Flag & Risk Audit</strong></td>
+            <td><strong>Risk Detection</strong></td>
             <td class="col-standard">
-              <strong>High Confirmation Bias</strong><br>
-              Naively accepts claims from founder pitch decks & PR releases. Fails to detect hidden liabilities or churn.
-              <br><span class="verdict-badge poor">Rating: 3.5 / 10</span>
+              Relies on self-reported founder claims and published marketing materials.
             </td>
             <td class="col-our">
-              <strong>Guaranteed Red Flag Identification</strong><br>
-              Pinpoints API wrapper vulnerabilities, customer churn spikes, legal disputes, and regulatory bottlenecks before you sign Term Sheets.
-              <br><span class="verdict-badge winner">Rating: 9.5 / 10 • WINNER</span>
+              Systematic evaluation of hidden liabilities, API dependencies, customer churn, and regulatory bottlenecks.
             </td>
           </tr>
           <tr>
-            <td><strong>Source Independence</strong></td>
+            <td><strong>Source Lineage</strong></td>
             <td class="col-standard">
-              <strong>Duplicate Counting Bias</strong><br>
-              Treats 10 news blogs quoting 1 press release as "10 independent evidence sources".
-              <br><span class="verdict-badge poor">Rating: 4.5 / 10</span>
+              May aggregate republished media quoting the same single press release.
             </td>
             <td class="col-our">
-              <strong>Verified Independent Proof</strong><br>
-              Eliminates circular PR hype. Every statement is verified only when backed by separate, un-linked primary facts.
-              <br><span class="verdict-badge winner">Rating: 9.6 / 10 • WINNER</span>
+              Groups duplicated media claims into single verified primary facts.
             </td>
           </tr>
           <tr>
-            <td><strong>AI Hallucination Risk</strong></td>
+            <td><strong>Fact Precision</strong></td>
             <td class="col-standard">
-              <strong>High Hallucination Risk (15-30%)</strong><br>
-              Invents non-existent partnerships, valuation metrics, or co-founders when data is missing.
-              <br><span class="verdict-badge poor">Rating: 2.0 / 10</span>
+              Risk of hallucinating missing metrics or unverified partnerships.
             </td>
             <td class="col-our">
-              <strong>100% Audit-Ready Fact Precision</strong><br>
-              Zero invented metrics or fake partnerships. Every single statement includes clickable primary source links.
-              <br><span class="verdict-badge winner">Rating: 10 / 10 • WINNER</span>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Overall Suitability for Deals</strong></td>
-            <td class="col-standard">
-              <strong>Unfit for Investment Decisions</strong><br>
-              Good for quick general summaries, dangerous for Term Sheet due diligence.
-            </td>
-            <td class="col-our">
-              <strong>Executive Deal Memo Ready</strong><br>
-              Instant 3-minute due diligence briefs ready for Investment Committees and M&A acquisitions.
+              Every statement is explicitly anchored to verified primary URLs and public filings.
             </td>
           </tr>
         </tbody>
@@ -739,14 +608,14 @@
     <!-- SHOWCASE STARTUPS INTERACTIVE REPORTS -->
     <div class="showcase-header">
       <div>
-        <h2 style="font-size: 1.6rem; font-weight: 900; letter-spacing: -0.02em;">Live Showcase Due Diligence Reports</h2>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Click through real executive evidence briefs generated for active startups:</p>
+        <h2 style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;">Sample Due Diligence Reports</h2>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 2px;">Review generated evidence briefs for evaluated companies:</p>
       </div>
       <div class="selector-bar">
-        <button class="tab-btn active" onclick="loadStartup(0)">🛡️ Helsing (MilTech)</button>
-        <button class="tab-btn" onclick="loadStartup(1)">🧬 Insilico (Pharma)</button>
-        <button class="tab-btn" onclick="loadStartup(2)">🏢 TestFit (PropTech)</button>
-        <button class="tab-btn" onclick="loadStartup(3)">🎨 Lensa AI (Consumer)</button>
+        <button class="tab-btn active" onclick="loadStartup(0)">Helsing (MilTech)</button>
+        <button class="tab-btn" onclick="loadStartup(1)">Insilico (Pharma)</button>
+        <button class="tab-btn" onclick="loadStartup(2)">TestFit (PropTech)</button>
+        <button class="tab-btn" onclick="loadStartup(3)">Lensa AI (Consumer)</button>
       </div>
     </div>
 
@@ -755,23 +624,21 @@
       <!-- Loaded dynamically -->
     </div>
 
-    <!-- PRICING SECTION FOR TARGET AUDIENCE -->
+    <!-- PRICING SECTION -->
     <section class="pricing-section" id="pricing">
-      <div style="text-align: center; margin-bottom: 32px;">
-        <h2 style="font-size: 2rem; font-weight: 900; letter-spacing: -0.03em;">Simple, Transparent Pricing</h2>
-        <p style="color: var(--text-muted); margin-top: 8px;">100% Money-back guarantee if an unverified claim is detected.</p>
+      <div style="margin-bottom: 24px;">
+        <h2 style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em;">Plans & Access</h2>
       </div>
 
       <div class="pricing-grid">
         <div class="price-card">
           <div>
-            <div class="price-title">Single Deal Check</div>
+            <div class="price-title">Single Audit</div>
             <div class="price-amount">$49 <span>/ report</span></div>
             <ul class="price-features">
-              <li>✓ 1 Full Executive Evidence Brief</li>
-              <li>✓ 4-Hypothesis Risk Analysis</li>
-              <li>✓ Disproving Red Flags Audit</li>
-              <li>✓ Interactive Netlify URL + PDF Export</li>
+              <li>• Single Company Due Diligence Brief</li>
+              <li>• Primary Patent & Risk Audit</li>
+              <li>• PDF and Web Export</li>
             </ul>
           </div>
           <button class="btn btn-outline" onclick="openModal()">Order Single Report</button>
@@ -779,28 +646,26 @@
 
         <div class="price-card featured">
           <div>
-            <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-black); margin-bottom:4px; font-weight:800;">Most Popular for VC Teams</div>
             <div class="price-title">Pro Unlimited</div>
             <div class="price-amount">$299 <span>/ month</span></div>
             <ul class="price-features">
-              <li>✓ 10 Deep Due Diligence Reports / mo</li>
-              <li>✓ Telegram Bot 1-Click Interface</li>
-              <li>✓ Priority Processing & Scraping</li>
-              <li>✓ Key Questions for Founders Generator</li>
+              <li>• 10 Deep Due Diligence Reports / month</li>
+              <li>• Telegram Integration Access</li>
+              <li>• Priority Processing</li>
+              <li>• Custom Founder Q&A Generator</li>
             </ul>
           </div>
-          <button class="btn" onclick="openModal()">Start Pro 7-Day Trial</button>
+          <button class="btn" onclick="openModal()">Start Pro Trial</button>
         </div>
 
         <div class="price-card">
           <div>
-            <div class="price-title">Enterprise API</div>
+            <div class="price-title">Enterprise</div>
             <div class="price-amount">$999 <span>/ month</span></div>
             <ul class="price-features">
-              <li>✓ Unlimited Deal Diligence Scans</li>
-              <li>✓ Custom Internal Database Connectors</li>
-              <li>✓ Custom Webhook & Slack Integration</li>
-              <li>✓ Dedicated Knowledge Support</li>
+              <li>• Unlimited Due Diligence Scans</li>
+              <li>• Custom Database Integrations</li>
+              <li>• Dedicated Support</li>
             </ul>
           </div>
           <button class="btn btn-outline" onclick="openModal()">Contact Sales</button>
@@ -810,24 +675,24 @@
 
   </main>
 
-  <!-- LEAD CAPTURE MODAL -->
+  <!-- LEAD CAPTURE FORM MODAL -->
   <div class="modal-overlay" id="leadModal">
     <div class="modal-card">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
-        <h3 style="font-size:1.3rem; font-weight:900;">Request Custom Due Diligence Brief</h3>
-        <button onclick="closeModal()" style="background:none; border:none; color:var(--text-black); font-size:1.5rem; cursor:pointer;">&times;</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h3 style="font-size:1.2rem; font-weight:800;">Request Due Diligence Report</h3>
+        <button onclick="closeModal()" style="background:none; border:none; color:var(--text-black); font-size:1.4rem; cursor:pointer;">&times;</button>
       </div>
       <form onsubmit="handleFormSubmit(event)">
         <div class="form-group">
-          <label class="form-label">Startup Name / Website URL</label>
+          <label class="form-label">Startup Name or Website URL</label>
           <input type="text" class="form-input" placeholder="e.g. https://lensa.ai" required>
         </div>
         <div class="form-group">
-          <label class="form-label">Your Work Email</label>
+          <label class="form-label">Work Email</label>
           <input type="email" class="form-input" placeholder="partner@vc-fund.com" required>
         </div>
         <div class="form-group">
-          <label class="form-label">Investment Role</label>
+          <label class="form-label">Role</label>
           <select class="form-input">
             <option>VC Analyst / Associate</option>
             <option>Managing Partner / VC Principal</option>
@@ -835,13 +700,13 @@
             <option>Angel Investor</option>
           </select>
         </div>
-        <button type="submit" class="btn" style="width:100%; padding:14px;">Submit & Generate Brief</button>
+        <button type="submit" class="btn" style="width:100%; padding:12px;">Submit Request</button>
       </form>
     </div>
   </div>
 
   <footer>
-    <p>© 2026 Adaptive Evidence Search • Enterprise Due Diligence Platform</p>
+    <p>© 2026 Adaptive Evidence Search — Enterprise Due Diligence Platform</p>
   </footer>
 
   <script>
@@ -849,21 +714,21 @@
       {
         startup_name: "Helsing",
         category: "AI + MilTech",
-        framework_version: "Institutional Due Diligence Brief",
-        executive_summary: "Helsing operates in AI + MilTech space. Our Evidence Search engine analyzed primary patents, employee mobility, ROS2 GitHub activity, and ITAR compliance records. Key finding: PROCEED WITH CAUTION. Conviction Score: 0.78/1.0.",
-        investment_recommendation: "PROCEED WITH CAUTION (Requires Founder Q&A on High Red Flag)",
+        framework_version: "Due Diligence Brief",
+        executive_summary: "Helsing operates in AI + MilTech. Primary patents, employee mobility, ROS2 GitHub activity, and ITAR compliance records were evaluated. Finding: PROCEED WITH CAUTION. Conviction Score: 0.78/1.0.",
+        investment_recommendation: "PROCEED WITH CAUTION (Requires Founder Q&A on Export License Risk)",
         conviction_score: 0.78,
         red_flags: [
           {
             severity: "HIGH",
-            title: "Dual-Use Export Licensing & NDA Procurement Bottleneck",
+            title: "Dual-Use Export Licensing & Procurement Bottleneck",
             evidence: "ITAR & EAR compliance verification required. Component sourcing relies on dual-use commercial FPGAs subject to export restrictions.",
             source: "US Federal Procurement & EAR Export Control Registry 2025"
           },
           {
             severity: "MEDIUM",
             title: "Government Contract Cycle Latency",
-            evidence: "Average sales cycle with DoD / MoD procurement is 14–18 months. Short-term runway risk if Serie A closes late.",
+            evidence: "Average sales cycle with DoD / MoD procurement is 14–18 months. Short-term runway risk if Series A closes late.",
             source: "GovProcure Insights & Federal Contract Award History"
           }
         ],
@@ -907,15 +772,15 @@
       {
         startup_name: "Insilico Medicine",
         category: "AI + Pharma",
-        framework_version: "Institutional Due Diligence Brief",
-        executive_summary: "Insilico Medicine operates in AI + Pharma space. Our Evidence Search engine analyzed primary patents, bioRxiv preprints, and FDA filings. Key finding: PROCEED WITH CAUTION. Conviction Score: 0.78/1.0.",
-        investment_recommendation: "PROCEED WITH CAUTION (Requires Founder Q&A on High Red Flag)",
+        framework_version: "Due Diligence Brief",
+        executive_summary: "Insilico Medicine operates in AI + Pharma. Primary patents, bioRxiv preprints, and FDA filings were evaluated. Finding: PROCEED WITH CAUTION. Conviction Score: 0.78/1.0.",
+        investment_recommendation: "PROCEED WITH CAUTION (Requires Founder Q&A on Wet-Lab Validation)",
         conviction_score: 0.78,
         red_flags: [
           {
             severity: "HIGH",
             title: "Wet-Lab In-Vitro Validation Gap",
-            evidence: "Verification audit discovered in-silico molecular bindings show high affinity, but in-vitro wet lab validation data only covers 12 candidates out of 150 predicted.",
+            evidence: "In-silico molecular bindings show high affinity, but in-vitro wet lab validation data only covers 12 candidates out of 150 predicted.",
             source: "BioRxiv Preprint Review & External Lab Audit 2025"
           },
           {
@@ -965,8 +830,8 @@
       {
         startup_name: "TestFit",
         category: "AI + PropTech",
-        framework_version: "Institutional Due Diligence Brief",
-        executive_summary: "TestFit operates in AI + PropTech space. Our Evidence Search engine analyzed MLS data integration, spatial algorithms, and customer reviews. Key finding: STRONG INVEST. Conviction Score: 0.91/1.0.",
+        framework_version: "Due Diligence Brief",
+        executive_summary: "TestFit operates in AI + PropTech. MLS data integration, spatial algorithms, and customer reviews were evaluated. Finding: STRONG INVEST. Conviction Score: 0.91/1.0.",
         investment_recommendation: "STRONG INVEST (High Conviction & Proprietary Moat)",
         conviction_score: 0.91,
         red_flags: [
@@ -1023,15 +888,15 @@
       {
         startup_name: "Lensa AI (Prisma Labs)",
         category: "AI + Consumer & Creative",
-        framework_version: "Institutional Due Diligence Brief",
-        executive_summary: "Lensa AI operates in consumer generative AI photo/video editing. Our Evidence Search engine analyzed Stable Diffusion API dependencies, revenue churn dynamics, and biometric privacy risks. Key finding: PROCEED WITH CAUTION. Conviction Score: 0.64/1.0.",
+        framework_version: "Due Diligence Brief",
+        executive_summary: "Lensa AI operates in consumer generative AI photo/video editing. Stable Diffusion API dependencies, revenue churn dynamics, and biometric privacy risks were evaluated. Finding: PROCEED WITH CAUTION. Conviction Score: 0.64/1.0.",
         investment_recommendation: "PROCEED WITH CAUTION (High Churn & Low Moat Risk)",
         conviction_score: 0.64,
         red_flags: [
           {
             severity: "HIGH",
             title: "API Wrapper & Fine-Tuning Defensibility Bottleneck",
-            evidence: "Verification audit confirmed Magic Avatars feature relies on Stable Diffusion DreamBooth fine-tuning. Lacks proprietary foundation weights, leaving zero moat against free open-source mobile clones.",
+            evidence: "Magic Avatars feature relies on Stable Diffusion DreamBooth fine-tuning. Lacks proprietary foundation weights, leaving limited moat against free mobile alternatives.",
             source: "TechCrunch & Open-Source Model Architecture Registry 2025"
           },
           {
@@ -1122,33 +987,32 @@
         <div class="card summary-grid">
           <div>
             <div style="margin-bottom:6px;">
-              <span class="badge-v2">${data.framework_version || 'Institutional Due Diligence Brief'}</span>
+              <span class="category-tag">${data.category}</span>
             </div>
             <div class="startup-title">
               ${data.startup_name}
-              <span class="category-tag">${data.category}</span>
             </div>
             <p class="exec-summary">${data.executive_summary}</p>
           </div>
           <div class="recommendation-box">
             <div class="rec-label">Investment Verdict</div>
             <div class="rec-value">${data.investment_recommendation}</div>
-            <div class="rec-label" style="margin-top:16px;">Conviction Score</div>
+            <div class="rec-label" style="margin-top:14px;">Conviction Score</div>
             <div class="conviction-score">${(data.conviction_score * 100).toFixed(0)}%</div>
           </div>
         </div>
 
         <div class="card">
-          <div class="section-title">💡 Key Assets & Strategic Market Context</div>
+          <div class="section-title">Verified Primary Assets & Market Dynamics</div>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-            <div style="background:var(--bg-surface); padding:16px; border-radius:8px; border:1px solid var(--border-dim);">
-              <div style="font-size:0.75rem; text-transform:uppercase; font-weight:800; color:var(--text-muted); margin-bottom:8px;">Verified Primary Assets & Repos</div>
+            <div style="background:var(--bg-surface); padding:16px; border-radius:6px; border:1px solid var(--border-dim);">
+              <div style="font-size:0.72rem; text-transform:uppercase; font-weight:700; color:var(--text-muted); margin-bottom:8px;">Verified Primary Assets & Repositories</div>
               <div style="display:flex; flex-wrap:wrap; gap:6px;">
                 ${lightrag.low_level_entities.map(e => `<span class="source-tag">${e}</span>`).join('')}
               </div>
             </div>
-            <div style="background:var(--bg-surface); padding:16px; border-radius:8px; border:1px solid var(--border-dim);">
-              <div style="font-size:0.75rem; text-transform:uppercase; font-weight:800; color:var(--text-muted); margin-bottom:8px;">Strategic Market Dynamics</div>
+            <div style="background:var(--bg-surface); padding:16px; border-radius:6px; border:1px solid var(--border-dim);">
+              <div style="font-size:0.72rem; text-transform:uppercase; font-weight:700; color:var(--text-muted); margin-bottom:8px;">Strategic Market Dynamics</div>
               <div style="display:flex; flex-wrap:wrap; gap:6px;">
                 ${lightrag.high_level_themes.map(t => `<span class="source-tag" style="background:#18181B; color:white;">${t}</span>`).join('')}
               </div>
@@ -1157,32 +1021,32 @@
         </div>
 
         <div class="card">
-          <div class="section-title">🚨 Verified Risk & Red Flag Audit</div>
+          <div class="section-title">Identified Risk & Red Flag Audit</div>
           ${data.red_flags.map(rf => `
             <div class="red-flag-card">
               <div class="red-flag-header">
                 <span class="red-flag-title">${rf.title}</span>
                 <span class="severity-badge ${rf.severity}">${rf.severity} RISK</span>
               </div>
-              <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:8px;">${rf.evidence}</p>
+              <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:6px;">${rf.evidence}</p>
               <span class="source-tag">Source: ${rf.source}</span>
             </div>
           `).join('')}
         </div>
 
         <div class="card">
-          <div class="section-title">⚖️ Competing Investment Hypotheses Risk Matrix</div>
+          <div class="section-title">Competing Hypotheses Risk Evaluation</div>
           <table class="table">
             <thead>
               <tr>
-                <th>Hypothesis ID</th>
+                <th>Hypothesis</th>
                 <th>Statement</th>
                 <th>Confidence</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>H1 (Primary)</strong></td>
+                <td><strong>H1 (Primary Moat)</strong></td>
                 <td>${data.ach_hypotheses.primary_h1.statement}</td>
                 <td><strong style="color:var(--text-black);">${(data.ach_hypotheses.primary_h1.confidence * 100).toFixed(0)}%</strong></td>
               </tr>
@@ -1192,12 +1056,12 @@
                 <td><strong style="color:var(--text-muted);">${(data.ach_hypotheses.alternative_h2.confidence * 100).toFixed(0)}%</strong></td>
               </tr>
               <tr>
-                <td><strong>H0 (Exaggeration)</strong></td>
+                <td><strong>H0 (Growth Claim Risk)</strong></td>
                 <td>${data.ach_hypotheses.null_h0.statement}</td>
                 <td><strong style="color:var(--text-muted);">${(data.ach_hypotheses.null_h0.confidence * 100).toFixed(0)}%</strong></td>
               </tr>
               <tr>
-                <td><strong>HV (Hidden Risk)</strong></td>
+                <td><strong>HV (Legal / Regulatory Risk)</strong></td>
                 <td>${data.ach_hypotheses.visibility_hv ? data.ach_hypotheses.visibility_hv.statement : 'Hidden legal liabilities audit executed'}</td>
                 <td><strong style="color:var(--text-muted);">${(data.ach_hypotheses.visibility_hv ? data.ach_hypotheses.visibility_hv.confidence * 100 : 10).toFixed(0)}%</strong></td>
               </tr>
@@ -1206,9 +1070,9 @@
         </div>
 
         <div class="card">
-          <div class="section-title">⚡ Tech Moat & IP Defensibility Audit</div>
+          <div class="section-title">Technical Defensibility & IP Moat Audit</div>
           <table class="table">
-            <tr><th>Moat Rating</th><td><strong>${data.tech_moat_evaluation.moat_rating}</strong></td></tr>
+            <tr><th>Defensibility Rating</th><td><strong>${data.tech_moat_evaluation.moat_rating}</strong></td></tr>
             <tr><th>Patents Granted</th><td>${data.tech_moat_evaluation.patent_count} Active Patents</td></tr>
             <tr><th>Proprietary Dataset</th><td>${data.tech_moat_evaluation.proprietary_dataset}</td></tr>
             <tr><th>GitHub Commit Velocity</th><td>${data.tech_moat_evaluation.github_activity}</td></tr>
@@ -1217,13 +1081,13 @@
         </div>
 
         <div class="card">
-          <div class="section-title">🔬 Primary Verified Claims & Provenance</div>
+          <div class="section-title">Verified Primary Claims & Provenance</div>
           <table class="table">
             <thead>
               <tr>
-                <th>Atomic Statement</th>
+                <th>Statement</th>
                 <th>Source & Provenance</th>
-                <th>Independence Group</th>
+                <th>Source Lineage</th>
                 <th>Confidence</th>
               </tr>
             </thead>
@@ -1241,7 +1105,7 @@
         </div>
 
         <div class="card">
-          <div class="section-title">❓ Top 3 Priority Questions for Founders (Deal Memo)</div>
+          <div class="section-title">Priority Questions for Founder Due Diligence</div>
           <ul class="question-list">
             ${data.key_questions_for_founders.map(q => `<li class="question-item">${q}</li>`).join('')}
           </ul>
@@ -1261,7 +1125,7 @@
 
     function handleFormSubmit(e) {
       e.preventDefault();
-      alert('Thank you! Your custom Due Diligence request has been logged. Our orchestrator is processing the report.');
+      alert('Thank you. Your request has been recorded and is being processed.');
       closeModal();
     }
 
