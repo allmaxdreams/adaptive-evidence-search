@@ -204,3 +204,73 @@ class AuditMetrics:
 
     def dict(self) -> Dict[str, Any]:
         return asdict(self)
+
+
+# =====================================================================
+# ONTOLOGICAL SEARCH 2.0 EXTENSIONS (AutoSchema, AtomicClaims, ACH Matrix)
+# =====================================================================
+
+@dataclass
+class AtomicClaim:
+    id: str
+    subject: str
+    predicate: str
+    object: str
+    source_url: str
+    source_domain: str
+    independence_group: str
+    is_primary_source: bool
+    confidence: float
+    target_hypothesis: str
+
+    def dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class ACHMatrixRow:
+    claim_id: str
+    statement: str
+    h1_score: int  # +1 supporting, -1 contradicting, 0 neutral
+    h2_score: int
+    h0_score: int
+    hv_score: int
+
+    def dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class ACHMatrix:
+    rows: List[ACHMatrixRow] = field(default_factory=list)
+    h1_net_score: int = 0
+    h2_net_score: int = 0
+    h0_net_score: int = 0
+    hv_net_score: int = 0
+    winning_hypothesis: str = "H1"
+
+    def dict(self) -> Dict[str, Any]:
+        return {
+            "rows": [r.dict() for r in self.rows],
+            "h1_net_score": self.h1_net_score,
+            "h2_net_score": self.h2_net_score,
+            "h0_net_score": self.h0_net_score,
+            "hv_net_score": self.hv_net_score,
+            "winning_hypothesis": self.winning_hypothesis
+        }
+
+
+@dataclass
+class DynamicOntology:
+    version: int = 2
+    domain_name: str = "Auto-Induced Domain"
+    classes: List[str] = field(default_factory=list)
+    dynamic_relations: List[Relation] = field(default_factory=list)
+    extracted_vocabulary: List[str] = field(default_factory=list)
+    shacl_validated: bool = True
+
+    def dict(self) -> Dict[str, Any]:
+        res = asdict(self)
+        res["dynamic_relations"] = [r.dict() if isinstance(r, Relation) else r for r in self.dynamic_relations]
+        return res
+

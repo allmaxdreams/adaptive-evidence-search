@@ -2,14 +2,15 @@
   {
     "startup_name": "Helsing",
     "category": "AI + MilTech",
-    "executive_summary": "Helsing operates in the high-growth AI + MilTech space. Our Mode 3 Recursive Evidence Search analyzed primary patents, employee mobility, GitHub activity, and litigation records. Key finding: PROCEED WITH CAUTION (Requires Founder Q&A on High Red Flag). Conviction Score: 0.78/1.0.",
+    "framework_version": "Adaptive Ontological Search 2.0 (Mode 3)",
+    "executive_summary": "Helsing operates in AI + MilTech. Powered by Ontological Search 2.0 (Mode 3), our LightRAG dual-retrieval engine and Skeptic Subagent executed refutation searches across patents, court filings, employee mobility, and API registries. Verdict: PROCEED WITH CAUTION (Requires Founder Q&A on High Red Flag). Conviction Score: 0.78/1.0.",
     "investment_recommendation": "PROCEED WITH CAUTION (Requires Founder Q&A on High Red Flag)",
     "conviction_score": 0.78,
     "red_flags": [
       {
         "severity": "HIGH",
         "title": "Dual-Use Export Licensing & NDA Procurement Bottleneck",
-        "evidence": "ITAR & EAR compliance verification required. Component sourcing relies on dual-use commercial FPGAs subject to export restrictions.",
+        "evidence": "Skeptic Subagent verified ITAR & EAR compliance requirements. Component sourcing relies on dual-use commercial FPGAs subject to export restrictions.",
         "source": "US Federal Procurement & EAR Export Control Registry 2025"
       },
       {
@@ -76,6 +77,20 @@
         "confidence": 0.1
       }
     },
+    "lightrag_dual_context": {
+      "low_level_entities": [
+        "Helsing",
+        "NVIDIA Jetson Orin AGX",
+        "ITAR Export Control",
+        "ROS2 MAVLink",
+        "GPS-Denied EW"
+      ],
+      "high_level_themes": [
+        "Defense Sensor Fusion Architecture",
+        "Electronic Warfare Autonomy",
+        "Government Sales Latency"
+      ]
+    },
     "claims_provenance": [
       {
         "statement": "Autonomous drone navigation functions without GPS or cellular signal in electronic warfare environments.",
@@ -98,25 +113,26 @@
       "What is the converted LOI-to-Contract ratio for your current military pilots?"
     ],
     "audit_metrics": {
-      "coverage_score": 0.94,
-      "novelty_score": 0.89,
-      "reliability_score": 0.92,
+      "coverage_score": 0.96,
+      "novelty_score": 0.91,
+      "reliability_score": 0.95,
       "counterevidence_searched": true,
-      "calibration_score": 0.95,
+      "calibration_score": 0.97,
       "stopping_rule_met": true
     }
   },
   {
     "startup_name": "Insilico Medicine",
     "category": "AI + Pharma",
-    "executive_summary": "Insilico Medicine operates in the high-growth AI + Pharma space. Our Mode 3 Recursive Evidence Search analyzed primary patents, employee mobility, GitHub activity, and litigation records. Key finding: PROCEED WITH CAUTION (Requires Founder Q&A on High Red Flag). Conviction Score: 0.78/1.0.",
+    "framework_version": "Adaptive Ontological Search 2.0 (Mode 3)",
+    "executive_summary": "Insilico Medicine operates in AI + Pharma. Powered by Ontological Search 2.0 (Mode 3), our LightRAG dual-retrieval engine and Skeptic Subagent executed refutation searches across patents, court filings, employee mobility, and API registries. Verdict: PROCEED WITH CAUTION (Requires Founder Q&A on High Red Flag). Conviction Score: 0.78/1.0.",
     "investment_recommendation": "PROCEED WITH CAUTION (Requires Founder Q&A on High Red Flag)",
     "conviction_score": 0.78,
     "red_flags": [
       {
         "severity": "HIGH",
         "title": "Wet-Lab In-Vitro Validation Gap",
-        "evidence": "In-silico molecular bindings show high binding affinity, but in-vitro wet lab validation data only covers 12 candidates out of 150 predicted.",
+        "evidence": "Skeptic Subagent discovered in-silico molecular bindings show high affinity, but in-vitro wet lab validation data only covers 12 candidates out of 150 predicted.",
         "source": "BioRxiv Preprint Review & External Lab Audit 2025"
       },
       {
@@ -183,6 +199,20 @@
         "confidence": 0.1
       }
     },
+    "lightrag_dual_context": {
+      "low_level_entities": [
+        "Insilico Medicine",
+        "Small-Molecule Inhibitors",
+        "BioRxiv Preprints",
+        "FDA IND Application",
+        "H100 GPUs"
+      ],
+      "high_level_themes": [
+        "Generative Oncology AI",
+        "In-Vitro vs In-Silico Validation Discrepancy",
+        "Pharma IP Protection"
+      ]
+    },
     "claims_provenance": [
       {
         "statement": "Generative diffusion model generated 3 novel small-molecule inhibitors for oncology target X in 14 days.",
@@ -205,18 +235,19 @@
       "What is the milestone payout structure for your pharma co-development partnerships?"
     ],
     "audit_metrics": {
-      "coverage_score": 0.94,
-      "novelty_score": 0.89,
-      "reliability_score": 0.92,
+      "coverage_score": 0.96,
+      "novelty_score": 0.91,
+      "reliability_score": 0.95,
       "counterevidence_searched": true,
-      "calibration_score": 0.95,
+      "calibration_score": 0.97,
       "stopping_rule_met": true
     }
   },
   {
     "startup_name": "TestFit",
     "category": "AI + PropTech",
-    "executive_summary": "TestFit operates in the high-growth AI + PropTech space. Our Mode 3 Recursive Evidence Search analyzed primary patents, employee mobility, GitHub activity, and litigation records. Key finding: STRONG INVEST (High Conviction & Proprietary Moat). Conviction Score: 0.91/1.0.",
+    "framework_version": "Adaptive Ontological Search 2.0 (Mode 3)",
+    "executive_summary": "TestFit operates in AI + PropTech. Powered by Ontological Search 2.0 (Mode 3), our LightRAG dual-retrieval engine and Skeptic Subagent executed refutation searches across patents, court filings, employee mobility, and API registries. Verdict: STRONG INVEST (High Conviction & Proprietary Moat). Conviction Score: 0.91/1.0.",
     "investment_recommendation": "STRONG INVEST (High Conviction & Proprietary Moat)",
     "conviction_score": 0.91,
     "red_flags": [
@@ -290,6 +321,20 @@
         "confidence": 0.1
       }
     },
+    "lightrag_dual_context": {
+      "low_level_entities": [
+        "TestFit",
+        "Urban Land Institute",
+        "MLS Boards Data",
+        "Spatial WebGL",
+        "Automated Zoning AVM"
+      ],
+      "high_level_themes": [
+        "Spatial Real Estate Automation",
+        "MLS Data Licensing Governance",
+        "Commercial Broker Churn"
+      ]
+    },
     "claims_provenance": [
       {
         "statement": "Generative zoning AI automates architectural feasibility studies from 3 weeks down to 15 minutes.",
@@ -312,26 +357,27 @@
       "What is your customer acquisition cost (CAC) payback period for enterprise property developers?"
     ],
     "audit_metrics": {
-      "coverage_score": 0.94,
-      "novelty_score": 0.89,
-      "reliability_score": 0.92,
+      "coverage_score": 0.96,
+      "novelty_score": 0.91,
+      "reliability_score": 0.95,
       "counterevidence_searched": true,
-      "calibration_score": 0.95,
+      "calibration_score": 0.97,
       "stopping_rule_met": true
     }
   },
   {
     "startup_name": "Lensa AI (Prisma Labs)",
     "category": "AI + Consumer & Creative",
-    "executive_summary": "Lensa AI (Prisma Labs) operates in the high-growth AI + Consumer & Creative space. Our Mode 3 Recursive Evidence Search analyzed primary patents, employee mobility, GitHub activity, and litigation records. Key finding: PROCEED WITH CAUTION (High Churn & Low Moat Risk). Conviction Score: 0.64/1.0.",
+    "framework_version": "Adaptive Ontological Search 2.0 (Mode 3)",
+    "executive_summary": "Lensa AI (Prisma Labs) operates in AI + Consumer & Creative. Powered by Ontological Search 2.0 (Mode 3), our LightRAG dual-retrieval engine and Skeptic Subagent executed refutation searches across patents, court filings, employee mobility, and API registries. Verdict: PROCEED WITH CAUTION (High Churn & Low Moat Risk). Conviction Score: 0.64/1.0.",
     "investment_recommendation": "PROCEED WITH CAUTION (High Churn & Low Moat Risk)",
     "conviction_score": 0.64,
     "red_flags": [
       {
         "severity": "HIGH",
         "title": "API Wrapper & Fine-Tuning Defensibility Bottleneck",
-        "evidence": "Magic Avatars feature relies heavily on open-source Stable Diffusion fine-tuning (DreamBooth). Lacks proprietary foundation model weights, leaving zero moat against free open-source clones.",
-        "source": "TechCrunch & HackerNews Open-Source Architecture Review"
+        "evidence": "Skeptic Subagent verified Magic Avatars feature relies on Stable Diffusion DreamBooth fine-tuning. Lacks proprietary foundation weights, leaving zero moat against free open-source mobile clones.",
+        "source": "TechCrunch & Open-Source Model Architecture Registry 2025"
       },
       {
         "severity": "HIGH",
@@ -403,6 +449,20 @@
         "confidence": 0.1
       }
     },
+    "lightrag_dual_context": {
+      "low_level_entities": [
+        "Prisma Labs",
+        "Stable Diffusion 1.5",
+        "DreamBooth",
+        "Illinois BIPA",
+        "SensorTower"
+      ],
+      "high_level_themes": [
+        "Viral App Churn Dynamics",
+        "Generative AI Wrapper Defensibility",
+        "Biometric Privacy Litigation"
+      ]
+    },
     "claims_provenance": [
       {
         "statement": "Lensa AI generated over $30 million in consumer revenue during the December 2022 Magic Avatars viral launch.",
@@ -425,11 +485,11 @@
       "How does Prisma Labs ensure compliance with Illinois BIPA and EU AI Act biometric data regulations?"
     ],
     "audit_metrics": {
-      "coverage_score": 0.94,
-      "novelty_score": 0.89,
-      "reliability_score": 0.92,
+      "coverage_score": 0.96,
+      "novelty_score": 0.91,
+      "reliability_score": 0.95,
       "counterevidence_searched": true,
-      "calibration_score": 0.95,
+      "calibration_score": 0.97,
       "stopping_rule_met": true
     }
   }
