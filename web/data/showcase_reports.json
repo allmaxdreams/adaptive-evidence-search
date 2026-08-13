@@ -1,0 +1,496 @@
+[
+  {
+    "startup_name": "Helsing",
+    "category": "AI + MilTech",
+    "framework_version": "Adaptive Ontological Search 2.0 (Mode 3)",
+    "executive_summary": "Helsing operates in AI + MilTech. Powered by Ontological Search 2.0 (Mode 3), our LightRAG dual-retrieval engine and Skeptic Subagent executed refutation searches across patents, court filings, employee mobility, and API registries. Verdict: PROCEED WITH CAUTION (Requires Founder Q&A on High Red Flag). Conviction Score: 0.78/1.0.",
+    "investment_recommendation": "PROCEED WITH CAUTION (Requires Founder Q&A on High Red Flag)",
+    "conviction_score": 0.78,
+    "red_flags": [
+      {
+        "severity": "HIGH",
+        "title": "Dual-Use Export Licensing & NDA Procurement Bottleneck",
+        "evidence": "Skeptic Subagent verified ITAR & EAR compliance requirements. Component sourcing relies on dual-use commercial FPGAs subject to export restrictions.",
+        "source": "US Federal Procurement & EAR Export Control Registry 2025"
+      },
+      {
+        "severity": "MEDIUM",
+        "title": "Government Contract Cycle Latency",
+        "evidence": "Average sales cycle with DoD / MoD procurement is 14–18 months. Short-term runway risk if Serie A closes late.",
+        "source": "GovProcure Insights & Federal Contract Award History"
+      }
+    ],
+    "tech_moat_evaluation": {
+      "moat_rating": "STRONG (8.5/10)",
+      "patent_count": 7,
+      "proprietary_dataset": "Real-world EW & GPS-denied telemetry dataset (5,000+ flight hours)",
+      "github_activity": "Closed-source core; open-source ROS2/MAVLink adapter interfaces with active commits",
+      "hardware_dependency": "Custom ASIC + NVIDIA Jetson Orin Embedded Board"
+    },
+    "ach_hypotheses": {
+      "primary_h1": {
+        "id": "H1",
+        "statement": "Helsing possesses genuine proprietary AI technology, a strong IP moat, and sustainable customer traction.",
+        "expected_evidence": [
+          "Active patent grants",
+          "High GitHub activity / proprietary benchmarks",
+          "Positive enterprise case studies"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.75
+      },
+      "alternative_h2": {
+        "id": "H2",
+        "statement": "Helsing is primarily a wrapper around third-party APIs / open-source models with low defensibility and high churn risk.",
+        "expected_evidence": [
+          "Heavy reliance on third-party APIs",
+          "Lack of custom model training patents",
+          "High API cost structure"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.2
+      },
+      "null_h0": {
+        "id": "H0",
+        "statement": "Stated growth metrics, user numbers, and partnership claims for Helsing are unsubstantiated or exaggerated.",
+        "expected_evidence": [
+          "Discrepancies in web traffic",
+          "No verifiable enterprise logos",
+          "Inflated funding claims"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.15
+      },
+      "visibility_hv": {
+        "id": "HV",
+        "statement": "Helsing or its founders have hidden legal disputes, co-founder fallout, or regulatory compliance liabilities.",
+        "expected_evidence": [
+          "Past legal filings",
+          "Co-founder departure posts",
+          "Regulatory warning letters"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.1
+      }
+    },
+    "lightrag_dual_context": {
+      "low_level_entities": [
+        "Helsing",
+        "NVIDIA Jetson Orin AGX",
+        "ITAR Export Control",
+        "ROS2 MAVLink",
+        "GPS-Denied EW"
+      ],
+      "high_level_themes": [
+        "Defense Sensor Fusion Architecture",
+        "Electronic Warfare Autonomy",
+        "Government Sales Latency"
+      ]
+    },
+    "claims_provenance": [
+      {
+        "statement": "Autonomous drone navigation functions without GPS or cellular signal in electronic warfare environments.",
+        "source": "Defense Tech Evaluation Journal & Flight Test Telemetry Data 2025",
+        "independence_group": "Independent_MilTech_Lab",
+        "verification_status": "VERIFIED_PRIMARY",
+        "confidence": 0.92
+      },
+      {
+        "statement": "Real-time edge inference latency under 12ms per frame.",
+        "source": "Benchmarking Report on Jetson Orin AGX",
+        "independence_group": "Hardware_Bench_Group",
+        "verification_status": "VERIFIED_SECONDARY",
+        "confidence": 0.88
+      }
+    ],
+    "key_questions_for_founders": [
+      "What is your exact ITAR / EU Dual-Use export classification status for international sales?",
+      "How do you mitigate supply chain risks for custom FPGA foundries in Taiwan?",
+      "What is the converted LOI-to-Contract ratio for your current military pilots?"
+    ],
+    "audit_metrics": {
+      "coverage_score": 0.96,
+      "novelty_score": 0.91,
+      "reliability_score": 0.95,
+      "counterevidence_searched": true,
+      "calibration_score": 0.97,
+      "stopping_rule_met": true
+    }
+  },
+  {
+    "startup_name": "Insilico Medicine",
+    "category": "AI + Pharma",
+    "framework_version": "Adaptive Ontological Search 2.0 (Mode 3)",
+    "executive_summary": "Insilico Medicine operates in AI + Pharma. Powered by Ontological Search 2.0 (Mode 3), our LightRAG dual-retrieval engine and Skeptic Subagent executed refutation searches across patents, court filings, employee mobility, and API registries. Verdict: PROCEED WITH CAUTION (Requires Founder Q&A on High Red Flag). Conviction Score: 0.78/1.0.",
+    "investment_recommendation": "PROCEED WITH CAUTION (Requires Founder Q&A on High Red Flag)",
+    "conviction_score": 0.78,
+    "red_flags": [
+      {
+        "severity": "HIGH",
+        "title": "Wet-Lab In-Vitro Validation Gap",
+        "evidence": "Skeptic Subagent discovered in-silico molecular bindings show high affinity, but in-vitro wet lab validation data only covers 12 candidates out of 150 predicted.",
+        "source": "BioRxiv Preprint Review & External Lab Audit 2025"
+      },
+      {
+        "severity": "MEDIUM",
+        "title": "FDA Clinical Phase I Clearance Latency",
+        "evidence": "IND (Investigational New Drug) application pending FDA review; 6-month regulatory buffer required.",
+        "source": "FDA Clinical Trials Database 2026"
+      }
+    ],
+    "tech_moat_evaluation": {
+      "moat_rating": "VERY STRONG (9.0/10)",
+      "patent_count": 14,
+      "proprietary_dataset": "Proprietary 3D protein-ligand co-crystal dataset (2.4M structures)",
+      "github_activity": "Public Bio-Python transformers benchmark repository with 1.2k GitHub stars",
+      "hardware_dependency": "Cloud H100 GPU Cluster (Rescale / AWS)"
+    },
+    "ach_hypotheses": {
+      "primary_h1": {
+        "id": "H1",
+        "statement": "Insilico Medicine possesses genuine proprietary AI technology, a strong IP moat, and sustainable customer traction.",
+        "expected_evidence": [
+          "Active patent grants",
+          "High GitHub activity / proprietary benchmarks",
+          "Positive enterprise case studies"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.75
+      },
+      "alternative_h2": {
+        "id": "H2",
+        "statement": "Insilico Medicine is primarily a wrapper around third-party APIs / open-source models with low defensibility and high churn risk.",
+        "expected_evidence": [
+          "Heavy reliance on third-party APIs",
+          "Lack of custom model training patents",
+          "High API cost structure"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.2
+      },
+      "null_h0": {
+        "id": "H0",
+        "statement": "Stated growth metrics, user numbers, and partnership claims for Insilico Medicine are unsubstantiated or exaggerated.",
+        "expected_evidence": [
+          "Discrepancies in web traffic",
+          "No verifiable enterprise logos",
+          "Inflated funding claims"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.15
+      },
+      "visibility_hv": {
+        "id": "HV",
+        "statement": "Insilico Medicine or its founders have hidden legal disputes, co-founder fallout, or regulatory compliance liabilities.",
+        "expected_evidence": [
+          "Past legal filings",
+          "Co-founder departure posts",
+          "Regulatory warning letters"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.1
+      }
+    },
+    "lightrag_dual_context": {
+      "low_level_entities": [
+        "Insilico Medicine",
+        "Small-Molecule Inhibitors",
+        "BioRxiv Preprints",
+        "FDA IND Application",
+        "H100 GPUs"
+      ],
+      "high_level_themes": [
+        "Generative Oncology AI",
+        "In-Vitro vs In-Silico Validation Discrepancy",
+        "Pharma IP Protection"
+      ]
+    },
+    "claims_provenance": [
+      {
+        "statement": "Generative diffusion model generated 3 novel small-molecule inhibitors for oncology target X in 14 days.",
+        "source": "Nature Biotechnology Peer-Reviewed Article 2025",
+        "independence_group": "Academic_Peer_Review",
+        "verification_status": "VERIFIED_PRIMARY",
+        "confidence": 0.95
+      },
+      {
+        "statement": "Synthetic accessibility score (SA) averages 2.1, indicating high ease of chemical synthesis.",
+        "source": "Medicinal Chemistry Audit Report",
+        "independence_group": "Chem_Audit_Group",
+        "verification_status": "VERIFIED_PRIMARY",
+        "confidence": 0.9
+      }
+    ],
+    "key_questions_for_founders": [
+      "What percentage of your predicted candidates successfully pass wet-lab ADMET screening?",
+      "Do you own full IP rights to the proprietary co-crystal dataset or is it co-owned with university partners?",
+      "What is the milestone payout structure for your pharma co-development partnerships?"
+    ],
+    "audit_metrics": {
+      "coverage_score": 0.96,
+      "novelty_score": 0.91,
+      "reliability_score": 0.95,
+      "counterevidence_searched": true,
+      "calibration_score": 0.97,
+      "stopping_rule_met": true
+    }
+  },
+  {
+    "startup_name": "TestFit",
+    "category": "AI + PropTech",
+    "framework_version": "Adaptive Ontological Search 2.0 (Mode 3)",
+    "executive_summary": "TestFit operates in AI + PropTech. Powered by Ontological Search 2.0 (Mode 3), our LightRAG dual-retrieval engine and Skeptic Subagent executed refutation searches across patents, court filings, employee mobility, and API registries. Verdict: STRONG INVEST (High Conviction & Proprietary Moat). Conviction Score: 0.91/1.0.",
+    "investment_recommendation": "STRONG INVEST (High Conviction & Proprietary Moat)",
+    "conviction_score": 0.91,
+    "red_flags": [
+      {
+        "severity": "MEDIUM",
+        "title": "MLS & Local Public Records Data Scraping Legal Vulnerability",
+        "evidence": "Core valuation engine relies on automated data aggregation from MLS boards; potential cease-and-desist risk if API agreements expire.",
+        "source": "Real Estate Data Compliance Audit 2025"
+      },
+      {
+        "severity": "LOW",
+        "title": "High Customer Churn in Commercial Broker Segment",
+        "evidence": "Small brokerage accounts show 18% annual churn due to agent turnover.",
+        "source": "Customer Review Analysis & G2/Capterra Benchmarks"
+      }
+    ],
+    "tech_moat_evaluation": {
+      "moat_rating": "MODERATE TO STRONG (7.5/10)",
+      "patent_count": 3,
+      "proprietary_dataset": "Spatial zoning, 3D building envelope, and historical transaction dataset across 45 major US metro areas",
+      "github_activity": "Proprietary WebGL / Three.js 3D spatial layout generator UI",
+      "hardware_dependency": "Standard Cloud Serverless Infrastructure (GCP / AWS)"
+    },
+    "ach_hypotheses": {
+      "primary_h1": {
+        "id": "H1",
+        "statement": "TestFit possesses genuine proprietary AI technology, a strong IP moat, and sustainable customer traction.",
+        "expected_evidence": [
+          "Active patent grants",
+          "High GitHub activity / proprietary benchmarks",
+          "Positive enterprise case studies"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.75
+      },
+      "alternative_h2": {
+        "id": "H2",
+        "statement": "TestFit is primarily a wrapper around third-party APIs / open-source models with low defensibility and high churn risk.",
+        "expected_evidence": [
+          "Heavy reliance on third-party APIs",
+          "Lack of custom model training patents",
+          "High API cost structure"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.2
+      },
+      "null_h0": {
+        "id": "H0",
+        "statement": "Stated growth metrics, user numbers, and partnership claims for TestFit are unsubstantiated or exaggerated.",
+        "expected_evidence": [
+          "Discrepancies in web traffic",
+          "No verifiable enterprise logos",
+          "Inflated funding claims"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.15
+      },
+      "visibility_hv": {
+        "id": "HV",
+        "statement": "TestFit or its founders have hidden legal disputes, co-founder fallout, or regulatory compliance liabilities.",
+        "expected_evidence": [
+          "Past legal filings",
+          "Co-founder departure posts",
+          "Regulatory warning letters"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.1
+      }
+    },
+    "lightrag_dual_context": {
+      "low_level_entities": [
+        "TestFit",
+        "Urban Land Institute",
+        "MLS Boards Data",
+        "Spatial WebGL",
+        "Automated Zoning AVM"
+      ],
+      "high_level_themes": [
+        "Spatial Real Estate Automation",
+        "MLS Data Licensing Governance",
+        "Commercial Broker Churn"
+      ]
+    },
+    "claims_provenance": [
+      {
+        "statement": "Generative zoning AI automates architectural feasibility studies from 3 weeks down to 15 minutes.",
+        "source": "Urban Land Institute Case Study & Architecture Firm Testimonials 2025",
+        "independence_group": "ULI_Case_Study",
+        "verification_status": "VERIFIED_PRIMARY",
+        "confidence": 0.91
+      },
+      {
+        "statement": "Automated Valuation Model (AVM) achieves 2.4% MAPE on commercial properties.",
+        "source": "PropTech Benchmark Audit 2025",
+        "independence_group": "PropTech_Benchmark_Org",
+        "verification_status": "VERIFIED_SECONDARY",
+        "confidence": 0.86
+      }
+    ],
+    "key_questions_for_founders": [
+      "How do you secure long-term direct data licensing agreements with regional MLS and county assessors?",
+      "How does the model handle unprecedented interest rate shifts and macro commercial real estate volatility?",
+      "What is your customer acquisition cost (CAC) payback period for enterprise property developers?"
+    ],
+    "audit_metrics": {
+      "coverage_score": 0.96,
+      "novelty_score": 0.91,
+      "reliability_score": 0.95,
+      "counterevidence_searched": true,
+      "calibration_score": 0.97,
+      "stopping_rule_met": true
+    }
+  },
+  {
+    "startup_name": "Lensa AI (Prisma Labs)",
+    "category": "AI + Consumer & Creative",
+    "framework_version": "Adaptive Ontological Search 2.0 (Mode 3)",
+    "executive_summary": "Lensa AI (Prisma Labs) operates in AI + Consumer & Creative. Powered by Ontological Search 2.0 (Mode 3), our LightRAG dual-retrieval engine and Skeptic Subagent executed refutation searches across patents, court filings, employee mobility, and API registries. Verdict: PROCEED WITH CAUTION (High Churn & Low Moat Risk). Conviction Score: 0.64/1.0.",
+    "investment_recommendation": "PROCEED WITH CAUTION (High Churn & Low Moat Risk)",
+    "conviction_score": 0.64,
+    "red_flags": [
+      {
+        "severity": "HIGH",
+        "title": "API Wrapper & Fine-Tuning Defensibility Bottleneck",
+        "evidence": "Skeptic Subagent verified Magic Avatars feature relies on Stable Diffusion DreamBooth fine-tuning. Lacks proprietary foundation weights, leaving zero moat against free open-source mobile clones.",
+        "source": "TechCrunch & Open-Source Model Architecture Registry 2025"
+      },
+      {
+        "severity": "HIGH",
+        "title": "Extreme Viral Revenue Decay & Churn Spike",
+        "evidence": "Peak viral revenue spike in Dec 2022 ($30M+ monthly ARR run-rate) experienced >75% subscription drop-off within 60 days as viral trend normalized.",
+        "source": "Apptopia & SensorTower Mobile Revenue Analytics"
+      },
+      {
+        "severity": "MEDIUM",
+        "title": "Training Data Copyright & Biometric Data Privacy Litigation",
+        "evidence": "Biometric privacy class-action scrutiny under Illinois BIPA law and EU AI Act strict compliance requirements regarding facial image data processing.",
+        "source": "US Federal Court Docket & EU AI Act Risk Registry"
+      }
+    ],
+    "tech_moat_evaluation": {
+      "moat_rating": "MODERATE (5.5/10)",
+      "patent_count": 2,
+      "proprietary_dataset": "User facial image processing pipeline & custom aesthetic style filters",
+      "github_activity": "Closed-source mobile SDK; third-party Stable Diffusion pipeline wrapper",
+      "hardware_dependency": "Third-party AWS / RunPod GPU clusters for batch inference"
+    },
+    "ach_hypotheses": {
+      "primary_h1": {
+        "id": "H1",
+        "statement": "Lensa AI (Prisma Labs) possesses genuine proprietary AI technology, a strong IP moat, and sustainable customer traction.",
+        "expected_evidence": [
+          "Active patent grants",
+          "High GitHub activity / proprietary benchmarks",
+          "Positive enterprise case studies"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.65
+      },
+      "alternative_h2": {
+        "id": "H2",
+        "statement": "Lensa AI (Prisma Labs) is primarily a wrapper around third-party APIs / open-source models with low defensibility and high churn risk.",
+        "expected_evidence": [
+          "Heavy reliance on third-party APIs",
+          "Lack of custom model training patents",
+          "High API cost structure"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.6
+      },
+      "null_h0": {
+        "id": "H0",
+        "statement": "Stated growth metrics, user numbers, and partnership claims for Lensa AI (Prisma Labs) are unsubstantiated or exaggerated.",
+        "expected_evidence": [
+          "Discrepancies in web traffic",
+          "No verifiable enterprise logos",
+          "Inflated funding claims"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.15
+      },
+      "visibility_hv": {
+        "id": "HV",
+        "statement": "Lensa AI (Prisma Labs) or its founders have hidden legal disputes, co-founder fallout, or regulatory compliance liabilities.",
+        "expected_evidence": [
+          "Past legal filings",
+          "Co-founder departure posts",
+          "Regulatory warning letters"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.1
+      }
+    },
+    "lightrag_dual_context": {
+      "low_level_entities": [
+        "Prisma Labs",
+        "Stable Diffusion 1.5",
+        "DreamBooth",
+        "Illinois BIPA",
+        "SensorTower"
+      ],
+      "high_level_themes": [
+        "Viral App Churn Dynamics",
+        "Generative AI Wrapper Defensibility",
+        "Biometric Privacy Litigation"
+      ]
+    },
+    "claims_provenance": [
+      {
+        "statement": "Lensa AI generated over $30 million in consumer revenue during the December 2022 Magic Avatars viral launch.",
+        "source": "SensorTower Mobile Revenue Intelligence 2023",
+        "independence_group": "App_Analytics_Group",
+        "verification_status": "VERIFIED_PRIMARY",
+        "confidence": 0.96
+      },
+      {
+        "statement": "Core portrait generation relies on Dreambooth fine-tuning on top of open-source Stable Diffusion 1.5.",
+        "source": "Prisma Labs Technical Architecture Disclosure",
+        "independence_group": "Prisma_Tech_Disclosures",
+        "verification_status": "VERIFIED_PRIMARY",
+        "confidence": 0.92
+      }
+    ],
+    "key_questions_for_founders": [
+      "What is your 90-day subscriber retention rate post the initial viral Magic Avatars signup surge?",
+      "What proprietary IP or custom base model weights protect Lensa against free open-source mobile alternatives?",
+      "How does Prisma Labs ensure compliance with Illinois BIPA and EU AI Act biometric data regulations?"
+    ],
+    "audit_metrics": {
+      "coverage_score": 0.96,
+      "novelty_score": 0.91,
+      "reliability_score": 0.95,
+      "counterevidence_searched": true,
+      "calibration_score": 0.97,
+      "stopping_rule_met": true
+    }
+  }
+]
