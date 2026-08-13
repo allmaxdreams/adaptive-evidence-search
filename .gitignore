@@ -1,0 +1,23 @@
+# Python virtualenv & cache
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment & secrets
+.env
+.env.local
+
+# Build output
+node_modules/
+dist/
+build/
+
+# Temp PDF / RTF tests
+test.pdf
+test.rtf
+test.html
