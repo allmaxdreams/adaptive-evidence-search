@@ -86,14 +86,16 @@ class TelegramVCBot:
             return None
 
     def get_updates(self):
-        url = f"{self.api_url}/getUpdates?offset={self.last_update_id + 1}&timeout=10"
+        url = f"{self.api_url}/getUpdates?offset={self.last_update_id + 1}&timeout=5"
         try:
-            with urllib.request.urlopen(url) as resp:
+            req = urllib.request.Request(url, headers={"User-Agent": "AdaptiveEvidenceBot/2.0"})
+            with urllib.request.urlopen(req, timeout=10) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
                 if data.get("ok"):
                     return data.get("result", [])
         except Exception as e:
-            print(f"[Bot Polling Error] {e}")
+            if "timed out" not in str(e).lower():
+                print(f"[Bot Polling Notice] {e}")
         return []
 
     async def handle_message(self, message: dict):
