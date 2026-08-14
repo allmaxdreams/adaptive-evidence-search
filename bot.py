@@ -213,34 +213,59 @@ class TelegramVCBot:
                     self.send_message(client_chat_id, f"ℹ️ Your audit request could not be processed at this time.")
 
     async def execute_and_send_deep_audit(self, target_chat_id: str, text: str):
-        cleaned = text.replace("http://", "").replace("https://", "").strip("/")
-        parts = cleaned.split("/")
-        domain_part = parts[0].replace("www.", "")
-        
-        # Clean name nicely
-        raw_name = domain_part.split(".")[0]
-        if "thefourthlaw" in raw_name.lower() or "fourthlaw" in raw_name.lower():
+        # NLP query cleanup (handle natural language requests)
+        cleaned_text = text.strip()
+        prefixes_to_strip = [
+            "перевір стартап", "перевірити стартап", "перевір компанію", "перевір",
+            "проведи аудит", "зроби аудит", "аудит стартапу", "аудит",
+            "досліди стартап", "дослідження", "check startup", "check company",
+            "check", "due diligence on", "due diligence for", "due diligence",
+            "audit on", "audit for", "audit", "investigate"
+        ]
+        text_lower = cleaned_text.lower()
+        for prefix in prefixes_to_strip:
+            if text_lower.startswith(prefix):
+                cleaned_text = cleaned_text[len(prefix):].strip(" :,-—")
+                text_lower = cleaned_text.lower()
+                break
+
+        # Check if URL or plain name
+        if cleaned_text.startswith("http://") or cleaned_text.startswith("https://") or ".ai" in text_lower or ".com" in text_lower or ".tech" in text_lower or ".io" in text_lower:
+            cleaned = cleaned_text.replace("http://", "").replace("https://", "").strip("/")
+            parts = cleaned.split("/")
+            domain_part = parts[0].replace("www.", "")
+            raw_name = domain_part.split(".")[0]
+            website = cleaned_text if cleaned_text.startswith("http") else f"https://{cleaned_text.lower()}"
+        else:
+            raw_name = cleaned_text
+            website = f"https://{cleaned_text.lower().replace(' ', '')}.com"
+
+        # Format name nicely
+        if "thefourthlaw" in raw_name.lower() or "fourthlaw" in raw_name.lower() or "fourth law" in raw_name.lower():
             name = "The Fourth Law"
         elif "moodro" in raw_name.lower():
             name = "Moodro.Tech"
         elif "helsing" in raw_name.lower():
             name = "Helsing"
+        elif "anduril" in raw_name.lower():
+            name = "Anduril Industries"
+        elif "insilico" in raw_name.lower():
+            name = "Insilico Medicine"
         else:
             name = raw_name.title()
         
         # Categorize
-        text_lower = text.lower()
         if (
             "moodro" in text_lower or "helsing" in text_lower or "fourthlaw" in text_lower or "thefourthlaw" in text_lower
-            or "miltech" in text_lower or "defense" in text_lower or "drone" in text_lower or "fpv" in text_lower
-            or "uav" in text_lower or "robot" in text_lower
+            or "fourth law" in text_lower or "anduril" in text_lower or "miltech" in text_lower or "defense" in text_lower
+            or "drone" in text_lower or "fpv" in text_lower or "uav" in text_lower or "robot" in text_lower
         ):
             category = "AI + MilTech"
         elif "lensa" in text_lower or "prisma" in text_lower or "consumer" in text_lower:
             category = "AI + Consumer & Creative"
-        elif "insilico" in text_lower or "pharma" in text_lower or "bio" in text_lower:
+        elif "insilico" in text_lower or "pharma" in text_lower or "bio" in text_lower or "drug" in text_lower or "recursion" in text_lower:
             category = "AI + Pharma"
-        elif "testfit" in text_lower or "proptech" in text_lower:
+        elif "testfit" in text_lower or "proptech" in text_lower or "real estate" in text_lower:
             category = "AI + PropTech"
         else:
             category = "AI & Tech Venture"
@@ -248,10 +273,10 @@ class TelegramVCBot:
         profile = StartupProfile(
             name=name,
             category=category,
-            website=text if text.startswith("http") else f"https://{text.lower()}",
+            website=website,
             founders=["Founding Team"],
             stated_mission=f"VC evaluation for {name}",
-            target_market="Global Tech Venture Market"
+            target_market=f"{category} Market"
         )
 
         report = await self.orchestrator.analyze_startup(profile)
