@@ -627,28 +627,33 @@
 
     <!-- PRICING SECTION -->
     <section class="pricing-section" id="pricing">
-      <div style="margin-bottom: 24px;">
-        <h2 style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em;">Plans & Access</h2>
-      </div>
+      <style>
+        .blurred-price {
+          filter: blur(6px);
+          user-select: none;
+          opacity: 0.5;
+          display: inline-block;
+        }
+      </style>
 
       <div class="pricing-grid">
         <div class="price-card">
           <div>
             <div class="price-title">Single Audit</div>
-            <div class="price-amount">$49 <span>/ report</span></div>
+            <div class="price-amount"><span class="blurred-price">$49</span> <span>/ report</span></div>
             <ul class="price-features">
               <li>• Single Company Due Diligence Brief</li>
               <li>• Primary Patent & Risk Audit</li>
               <li>• PDF and Web Export</li>
             </ul>
           </div>
-          <button class="btn btn-outline" onclick="openModal()">Order Single Report</button>
+          <button class="btn btn-outline" style="width:100%;" onclick="openModal()">Get Free Test Access</button>
         </div>
 
         <div class="price-card featured">
           <div>
             <div class="price-title">Pro Unlimited</div>
-            <div class="price-amount">$299 <span>/ month</span></div>
+            <div class="price-amount"><span class="blurred-price">$299</span> <span>/ month</span></div>
             <ul class="price-features">
               <li>• 10 Deep Due Diligence Reports / month</li>
               <li>• Telegram Integration Access</li>
@@ -656,20 +661,20 @@
               <li>• Custom Founder Q&A Generator</li>
             </ul>
           </div>
-          <button class="btn" onclick="openModal()">Start Pro Trial</button>
+          <button class="btn" style="width:100%;" onclick="openModal()">Get Free Test Access</button>
         </div>
 
         <div class="price-card">
           <div>
             <div class="price-title">Enterprise</div>
-            <div class="price-amount">$999 <span>/ month</span></div>
+            <div class="price-amount"><span class="blurred-price">$999</span> <span>/ month</span></div>
             <ul class="price-features">
               <li>• Unlimited Due Diligence Scans</li>
               <li>• Custom Database Integrations</li>
               <li>• Dedicated Support & SLA</li>
             </ul>
           </div>
-          <a href="mailto:max.kuzmenko@gmail.com?subject=Enterprise%20Due%20Diligence%20Inquiry" class="btn btn-outline" style="text-align:center;">Contact: max.kuzmenko@gmail.com</a>
+          <a href="mailto:max.kuzmenko@gmail.com?subject=Enterprise%20Due%20Diligence%20Inquiry" class="btn btn-outline" style="text-align:center; width:100%; box-sizing:border-box;">Contact Sales</a>
         </div>
       </div>
     </section>
@@ -686,8 +691,11 @@
       <form id="auditForm" name="due-diligence-request" method="POST" data-netlify="true" onsubmit="handleFormSubmit(event)">
         <input type="hidden" name="form-name" value="due-diligence-request" />
         <div class="form-group">
-          <label class="form-label">Target Startup for Verification (Name or Website URL)</label>
-          <input type="text" id="formStartup" name="startup_url" class="form-input" placeholder="e.g. Helsing, Moodro.tech, or https://lensa.ai" required>
+          <label class="form-label">Target Startup for Verification</label>
+          <input type="text" id="formStartup" name="startup_url" class="form-input" placeholder="e.g. The Fourth Law, Helsing, or https://anduril.com" required>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:5px; line-height:1.4;">
+            💡 <i>Enter a website URL, company name, or plain words (e.g. <code>The Fourth Law</code>, <code>Helsing</code>, <code>Scale AI</code>, or <code>moodro.tech</code>)</i>
+          </div>
         </div>
         <div class="form-group">
           <label class="form-label">Work Email</label>
@@ -702,7 +710,7 @@
             <option>Angel Investor</option>
           </select>
         </div>
-        <button type="submit" class="btn" id="submitBtn" style="width:100%; padding:12px;">Submit Request</button>
+        <button type="submit" class="btn" id="submitBtn" style="width:100%; padding:12px;">Get Free Test Access</button>
       </form>
     </div>
   </div>
@@ -1137,18 +1145,34 @@
       submitBtn.innerText = 'Submitting...';
       submitBtn.disabled = true;
 
-      // Submit to Netlify Forms asynchronously
+      // 1. Submit to Netlify Forms
       const formData = new FormData(form);
       fetch('/', {
         method: 'POST',
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams(formData).toString()
+      }).catch(err => console.log('Netlify form notice:', err));
+
+      // 2. Direct instant email alert to max.kuzmenko@gmail.com
+      fetch('https://formsubmit.co/ajax/max.kuzmenko@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: '🚨 New Due Diligence Request: ' + startup,
+          startup_to_verify: startup,
+          client_email: email,
+          investor_role: role,
+          submitted_at: new Date().toISOString()
+        })
       })
       .then(() => {
         showModalSuccess(startup, email);
       })
       .catch((error) => {
-        console.warn('Form submission notice:', error);
+        console.warn('Email notification dispatch:', error);
         showModalSuccess(startup, email);
       });
     }
