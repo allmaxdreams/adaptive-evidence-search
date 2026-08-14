@@ -42,7 +42,7 @@ TELEGRAM_BOT_TOKEN = (
 ADMIN_CHAT_ID = (
     (sys.argv[2] if len(sys.argv) > 2 else None)
     or os.environ.get("ADMIN_CHAT_ID")
-    or config_data.get("admin_chat_id", "15579099")
+    or config_data.get("admin_chat_id", "155799099")
 )
 
 NETLIFY_BASE_URL = "https://incomparable-chebakia-bb5490.netlify.app"
