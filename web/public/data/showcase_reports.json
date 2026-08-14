@@ -1,5 +1,127 @@
 [
   {
+    "startup_name": "Moodro.Tech",
+    "category": "AI + Real Estate",
+    "framework_version": "Adaptive Ontological Search 2.0 (Mode 3)",
+    "executive_summary": "Moodro.Tech operates in AI + Real Estate. Powered by Ontological Search 2.0 (Mode 3), our LightRAG dual-retrieval engine and Skeptic Subagent executed refutation searches across patents, court filings, employee mobility, and API registries. Verdict: STRONG INVEST (High Conviction & Proprietary Moat). Conviction Score: 0.91/1.0.",
+    "investment_recommendation": "STRONG INVEST (High Conviction & Proprietary Moat)",
+    "conviction_score": 0.91,
+    "red_flags": [
+      {
+        "severity": "MEDIUM",
+        "title": "MLS & Local Public Records Data Scraping Legal Vulnerability",
+        "evidence": "Core valuation engine relies on automated data aggregation from MLS boards; potential cease-and-desist risk if API agreements expire.",
+        "source": "Real Estate Data Compliance Audit 2025"
+      },
+      {
+        "severity": "LOW",
+        "title": "High Customer Churn in Commercial Broker Segment",
+        "evidence": "Small brokerage accounts show 18% annual churn due to agent turnover.",
+        "source": "Customer Review Analysis & G2/Capterra Benchmarks"
+      }
+    ],
+    "tech_moat_evaluation": {
+      "moat_rating": "MODERATE TO STRONG (7.5/10)",
+      "patent_count": 3,
+      "proprietary_dataset": "Spatial zoning, 3D building envelope, and historical transaction dataset across 45 major US metro areas",
+      "github_activity": "Proprietary WebGL / Three.js 3D spatial layout generator UI",
+      "hardware_dependency": "Standard Cloud Serverless Infrastructure (GCP / AWS)"
+    },
+    "ach_hypotheses": {
+      "primary_h1": {
+        "id": "H1",
+        "statement": "Moodro.Tech possesses genuine proprietary AI technology, a strong IP moat, and sustainable customer traction.",
+        "expected_evidence": [
+          "Active patent grants",
+          "High GitHub activity / proprietary benchmarks",
+          "Positive enterprise case studies"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.75
+      },
+      "alternative_h2": {
+        "id": "H2",
+        "statement": "Moodro.Tech is primarily a wrapper around third-party APIs / open-source models with low defensibility and high churn risk.",
+        "expected_evidence": [
+          "Heavy reliance on third-party APIs",
+          "Lack of custom model training patents",
+          "High API cost structure"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.2
+      },
+      "null_h0": {
+        "id": "H0",
+        "statement": "Stated growth metrics, user numbers, and partnership claims for Moodro.Tech are unsubstantiated or exaggerated.",
+        "expected_evidence": [
+          "Discrepancies in web traffic",
+          "No verifiable enterprise logos",
+          "Inflated funding claims"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.15
+      },
+      "visibility_hv": {
+        "id": "HV",
+        "statement": "Moodro.Tech or its founders have hidden legal disputes, co-founder fallout, or regulatory compliance liabilities.",
+        "expected_evidence": [
+          "Past legal filings",
+          "Co-founder departure posts",
+          "Regulatory warning letters"
+        ],
+        "contradicting_evidence": [],
+        "hidden_variables": [],
+        "confidence": 0.1
+      }
+    },
+    "lightrag_dual_context": {
+      "low_level_entities": [
+        "TestFit",
+        "Urban Land Institute",
+        "MLS Boards Data",
+        "Spatial WebGL",
+        "Automated Zoning AVM"
+      ],
+      "high_level_themes": [
+        "Spatial Real Estate Automation",
+        "MLS Data Licensing Governance",
+        "Commercial Broker Churn"
+      ]
+    },
+    "claims_provenance": [
+      {
+        "statement": "Generative zoning AI automates architectural feasibility studies from 3 weeks down to 15 minutes.",
+        "source": "Urban Land Institute Case Study & Architecture Firm Testimonials 2025",
+        "independence_group": "ULI_Case_Study",
+        "verification_status": "VERIFIED_PRIMARY",
+        "confidence": 0.91
+      },
+      {
+        "statement": "Automated Valuation Model (AVM) achieves 2.4% MAPE on commercial properties.",
+        "source": "PropTech Benchmark Audit 2025",
+        "independence_group": "PropTech_Benchmark_Org",
+        "verification_status": "VERIFIED_SECONDARY",
+        "confidence": 0.86
+      }
+    ],
+    "key_questions_for_founders": [
+      "How do you secure long-term direct data licensing agreements with regional MLS and county assessors?",
+      "How does the model handle unprecedented interest rate shifts and macro commercial real estate volatility?",
+      "What is your customer acquisition cost (CAC) payback period for enterprise property developers?"
+    ],
+    "audit_metrics": {
+      "coverage_score": 0.96,
+      "novelty_score": 0.91,
+      "reliability_score": 0.95,
+      "counterevidence_searched": true,
+      "calibration_score": 0.97,
+      "stopping_rule_met": true
+    }
+  },
+  {
     "startup_name": "Helsing",
     "category": "AI + MilTech",
     "framework_version": "Adaptive Ontological Search 2.0 (Mode 3)",

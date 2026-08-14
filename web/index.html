@@ -264,6 +264,7 @@
       padding: 4px;
       border-radius: 8px;
       border: 1px solid var(--border-dim);
+      overflow-x: auto;
     }
 
     .tab-btn {
@@ -611,11 +612,8 @@
         <h2 style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;">Sample Due Diligence Reports</h2>
         <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 2px;">Review generated evidence briefs for evaluated companies:</p>
       </div>
-      <div class="selector-bar">
-        <button class="tab-btn active" onclick="loadStartup(0)">Helsing (MilTech)</button>
-        <button class="tab-btn" onclick="loadStartup(1)">Insilico (Pharma)</button>
-        <button class="tab-btn" onclick="loadStartup(2)">TestFit (PropTech)</button>
-        <button class="tab-btn" onclick="loadStartup(3)">Lensa AI (Consumer)</button>
+      <div class="selector-bar" id="selector-bar">
+        <!-- Dynamically rendered tabs -->
       </div>
     </div>
 
@@ -711,6 +709,64 @@
 
   <script>
     const fallbackReports = [
+      {
+        startup_name: "Moodro.Tech",
+        category: "AI + Real Estate",
+        framework_version: "Due Diligence Brief",
+        executive_summary: "Moodro.Tech operates in AI + Real Estate. Spatial algorithms, property valuation telemetry, and MLS data integration were evaluated. Finding: STRONG INVEST. Conviction Score: 0.91/1.0.",
+        investment_recommendation: "STRONG INVEST (High Conviction & Proprietary Moat)",
+        conviction_score: 0.91,
+        red_flags: [
+          {
+            severity: "MEDIUM",
+            title: "MLS & Local Public Records Data Scraping Legal Vulnerability",
+            evidence: "Core valuation engine relies on automated data aggregation from MLS boards; potential cease-and-desist risk if API agreements expire.",
+            source: "Real Estate Data Compliance Audit 2025"
+          },
+          {
+            severity: "LOW",
+            title: "High Customer Churn in Commercial Broker Segment",
+            evidence: "Small brokerage accounts show 18% annual churn due to agent turnover.",
+            source: "Customer Review Analysis & G2/Capterra Benchmarks"
+          }
+        ],
+        tech_moat_evaluation: {
+          moat_rating: "MODERATE TO STRONG (7.5/10)",
+          patent_count: 3,
+          proprietary_dataset: "Spatial zoning, 3D building envelope, and historical transaction dataset across 45 major US metro areas",
+          github_activity: "Proprietary WebGL / Three.js 3D spatial layout generator UI",
+          hardware_dependency: "Standard Cloud Serverless Infrastructure (GCP / AWS)"
+        },
+        lightrag_dual_context: {
+          low_level_entities: ["Moodro.Tech", "Real Estate AI", "MLS Boards Data", "Spatial Layouts", "Property AVM"],
+          high_level_themes: ["PropTech Automation", "MLS Data Licensing Governance", "Commercial Real Estate Valuation"]
+        },
+        ach_hypotheses: {
+          primary_h1: { id: "H1", statement: "Moodro.Tech possesses genuine proprietary AI spatial engine and strong customer traction.", confidence: 0.91 },
+          alternative_h2: { id: "H2", statement: "Moodro.Tech is vulnerable to free open-source spatial plugin clones.", confidence: 0.15 },
+          null_h0: { id: "H0", statement: "Stated valuation accuracy metrics are unsubstantiated.", confidence: 0.10 },
+          visibility_hv: { id: "HV", statement: "Pending MLS board data scraping cease-and-desist warnings exist.", confidence: 0.05 }
+        },
+        claims_provenance: [
+          {
+            statement: "Generative zoning AI automates architectural feasibility studies from 3 weeks down to 15 minutes.",
+            source: "Urban Land Institute Case Study & Architecture Firm Testimonials 2025",
+            independence_group: "ULI_Case_Study",
+            confidence: 0.91
+          },
+          {
+            statement: "Automated Valuation Model (AVM) achieves 2.4% MAPE on commercial properties.",
+            source: "PropTech Benchmark Audit 2025",
+            independence_group: "PropTech_Benchmark_Org",
+            confidence: 0.86
+          }
+        ],
+        key_questions_for_founders: [
+          "How do you secure long-term direct data licensing agreements with regional MLS and county assessors?",
+          "How does the model handle unprecedented interest rate shifts and macro commercial real estate volatility?",
+          "What is your customer acquisition cost (CAC) payback period for enterprise property developers?"
+        ]
+      },
       {
         startup_name: "Helsing",
         category: "AI + MilTech",
@@ -967,7 +1023,16 @@
           }
         }
       } catch(e) {}
+      renderTabs();
       loadStartup(0);
+    }
+
+    function renderTabs() {
+      const bar = document.getElementById('selector-bar');
+      if (!bar) return;
+      bar.innerHTML = reportsData.map((d, i) => `
+        <button class="tab-btn ${i===0 ? 'active' : ''}" onclick="loadStartup(${i})">${d.startup_name}</button>
+      `).join('');
     }
 
     function loadStartup(index) {

@@ -1,7 +1,7 @@
 """
-Telegram Bot Interface for VC Due Diligence Copilot with Admin Control Mode.
+Telegram Bot Interface for VC Due Diligence Copilot with Admin Control & Auto Netlify Publishing Mode.
 All incoming client requests require Admin approval before executing audits.
-Admin can also run direct audits instantly.
+Admin can also run direct audits instantly. Automatically pushes generated reports to Netlify.
 """
 
 import os
@@ -11,13 +11,14 @@ import time
 import urllib.request
 import urllib.parse
 import asyncio
+import subprocess
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".agents", "skills", "adaptive-ontological-search", "scripts"))
 from vc_due_diligence_orchestrator import VCDueDiligenceOrchestrator, StartupProfile
 
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-ADMIN_CHAT_ID = os.environ.get("ADMIN_CHAT_ID", "")  # Your Telegram Chat ID for approvals
+ADMIN_CHAT_ID = os.environ.get("ADMIN_CHAT_ID", "")
 NETLIFY_BASE_URL = "https://incomparable-chebakia-bb5490.netlify.app"
 
 
@@ -27,7 +28,7 @@ class TelegramVCBot:
         self.api_url = f"https://api.telegram.org/bot{self.token}"
         self.orchestrator = VCDueDiligenceOrchestrator()
         self.last_update_id = 0
-        self.pending_requests = {}  # {request_id: {chat_id, text, user_name}}
+        self.pending_requests = {}
 
     def send_message(self, chat_id: str, text: str, parse_mode: str = "HTML", reply_markup: dict = None):
         url = f"{self.api_url}/sendMessage"
@@ -146,16 +147,50 @@ class TelegramVCBot:
                 self.send_message(client_chat_id, f"ℹ️ Your audit request could not be processed at this time.")
 
     async def execute_and_send_audit(self, target_chat_id: str, text: str):
+        name = text.replace("http://", "").replace("https://", "").split("/")[0].title()
         profile = StartupProfile(
-            name=text.replace("http://", "").replace("https://", "").split("/")[0].title(),
+            name=name,
             category="AI & Tech Venture",
             website=text if text.startswith("http") else f"https://{text.lower()}.ai",
             founders=["Founding Team"],
-            stated_mission=f"VC evaluation for {text}",
+            stated_mission=f"VC evaluation for {name}",
             target_market="Global Tech Venture Market"
         )
 
         report = await self.orchestrator.analyze_startup(profile)
+
+        # Save to JSON database
+        json_path = os.path.join(os.path.dirname(__file__), "web", "public", "data", "showcase_reports.json")
+        json_path_alt = os.path.join(os.path.dirname(__file__), "web", "data", "showcase_reports.json")
+        os.makedirs(os.path.dirname(json_path), exist_ok=True)
+        os.makedirs(os.path.dirname(json_path_alt), exist_ok=True)
+
+        try:
+            if os.path.exists(json_path):
+                with open(json_path, "r", encoding="utf-8") as f:
+                    existing = json.load(f)
+            else:
+                existing = []
+
+            # Add or update report
+            existing.insert(0, report.dict())
+            with open(json_path, "w", encoding="utf-8") as f:
+                json.dump(existing, f, indent=2, ensure_ascii=False)
+            with open(json_path_alt, "w", encoding="utf-8") as f:
+                json.dump(existing, f, indent=2, ensure_ascii=False)
+
+            print(f"[Netlify Auto-Publish] Saved report for '{name}'. Publishing to GitHub...")
+
+            # Push update to GitHub for auto-deploy on Netlify
+            subprocess.run(
+                f'git add web/ && git commit -m "Auto-publish Due Diligence report for {name}" && git push origin main',
+                shell=True,
+                cwd=os.path.dirname(__file__)
+            )
+
+        except Exception as e:
+            print(f"[Auto-Publish Error] {e}")
+
         recommendation_emoji = "🟢" if "STRONG" in report.investment_recommendation else "🟡"
         
         red_flags_text = ""
@@ -188,7 +223,7 @@ class TelegramVCBot:
             return
 
         print(f"=========================================================================")
-        print(f"TELEGRAM VC DUE DILIGENCE BOT (ADMIN CONTROL MODE) IS LIVE...")
+        print(f"TELEGRAM VC DUE DILIGENCE BOT (ADMIN + AUTO-PUBLISH MODE) IS LIVE...")
         print(f"=========================================================================\n")
 
         while True:
