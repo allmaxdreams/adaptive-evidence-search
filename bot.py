@@ -1,7 +1,7 @@
 """
-Telegram Bot Interface for VC Due Diligence Copilot.
+Telegram Bot Interface for VC Due Diligence Copilot with Rate Limiting.
 Uses Python Standard Library (urllib) to connect to Telegram Bot API with zero external dependencies.
-Receives startup links/names, triggers VCDueDiligenceOrchestrator Mode 3 search,
+Receives startup links/names, checks free trial quotas, triggers VCDueDiligenceOrchestrator,
 and sends teaser cards + links to the Netlify Web Viewer.
 """
 
@@ -17,7 +17,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__), ".agents", "skills", "ad
 from vc_due_diligence_orchestrator import VCDueDiligenceOrchestrator, StartupProfile
 
 
-# Read Telegram Bot Token from environment variable or prompt
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 NETLIFY_BASE_URL = "https://incomparable-chebakia-bb5490.netlify.app"
 
@@ -28,6 +27,8 @@ class TelegramVCBot:
         self.api_url = f"https://api.telegram.org/bot{self.token}"
         self.orchestrator = VCDueDiligenceOrchestrator()
         self.last_update_id = 0
+        self.user_usage = {}  # Track free requests per chat_id: {chat_id: count}
+        self.MAX_FREE_AUDITS = 1  # 1 Free trial audit per user before requiring payment
 
     def send_message(self, chat_id: int, text: str, parse_mode: str = "HTML", reply_markup: dict = None):
         url = f"{self.api_url}/sendMessage"
@@ -67,11 +68,11 @@ class TelegramVCBot:
         if text.startswith("/start"):
             welcome_msg = (
                 f"👋 <b>Welcome, {user_name}!</b>\n\n"
-                f"🛡️ <b>Adaptive Evidence Search — VC Due Diligence Copilot</b>\n"
-                f"Powered by Ontological Search 2.0 (Mode 3).\n\n"
-                f"<b>How to use:</b>\n"
+                f"🛡️ <b>Adaptive Evidence Search — VC Due Diligence Copilot</b>\n\n"
+                f"<b>How it works:</b>\n"
                 f"Send me any startup name or website link (e.g., <code>https://lensa.ai</code> or <code>Helsing MilTech</code>).\n\n"
-                f"I will run disproving queries, analyze patents, court records, employee mobility, and deliver a Due Diligence Brief!"
+                f"🎁 <b>Free Demo Trial:</b> You have <b>1 Free Trial Report</b>.\n"
+                f"To unlock unlimited searches, upgrade to Pro Unlimited ($299/mo)."
             )
             self.send_message(chat_id, welcome_msg)
             return
@@ -79,12 +80,32 @@ class TelegramVCBot:
         if not text:
             return
 
+        # Rate Limiting Check: Max 1 Free Audit per user
+        current_usage = self.user_usage.get(chat_id, 0)
+        if current_usage >= self.MAX_FREE_AUDITS:
+            limit_msg = (
+                f"🔒 <b>Free Trial Limit Reached!</b>\n\n"
+                f"You have used your <b>1/1 free demo report</b>.\n\n"
+                f"To analyze unlimited startups and access Founder Q&A generators, activate a Pro subscription ($299/mo) or order a single report ($49)."
+            )
+            pay_keyboard = {
+                "inline_keyboard": [
+                    [{"text": "💳 Upgrade to Pro ($299/mo)", "url": f"{NETLIFY_BASE_URL}#pricing"}],
+                    [{"text": "📄 Order Single Report ($49)", "url": f"{NETLIFY_BASE_URL}#pricing"}]
+                ]
+            }
+            self.send_message(chat_id, limit_msg, reply_markup=pay_keyboard)
+            return
+
+        # Increment usage counter for this chat_id
+        self.user_usage[chat_id] = current_usage + 1
+
         # Notify user analysis started
         self.send_message(
             chat_id,
-            f"⏳ <b>Mode 3 Audit Started for:</b> <code>{text}</code>\n\n"
+            f"⏳ <b>Audit Started for:</b> <code>{text}</code>\n\n"
             f"Scanning primary patents, ITAR registries, employee mobility, and court dockets...\n"
-            f"<i>Estimated time: 10–20 seconds.</i>"
+            f"<i>Estimated time: 10–15 seconds.</i>"
         )
 
         # Build startup profile
@@ -97,7 +118,7 @@ class TelegramVCBot:
             target_market="Global Tech Venture Market"
         )
 
-        # Execute Mode 3 Recursive Search
+        # Execute Search Engine
         report = await self.orchestrator.analyze_startup(profile)
 
         # Format Telegram Teaser Card
@@ -113,8 +134,8 @@ class TelegramVCBot:
             f"{recommendation_emoji} <b>Verdict:</b> {report.investment_recommendation}\n"
             f"🎯 <b>Conviction Score:</b> {int(report.conviction_score * 100)}%\n\n"
             f"🚨 <b>IDENTIFIED RED FLAGS:</b>\n{red_flags_text}"
-            f"💡 <b>LightRAG Themes:</b> {', '.join(report.lightrag_dual_context.get('high_level_themes', []))}\n\n"
-            f"👇 <b>View full interactive report with evidence sources:</b>"
+            f"💡 <b>Market Dynamics:</b> {', '.join(report.lightrag_dual_context.get('high_level_themes', []))}\n\n"
+            f"👇 <b>View full report with primary evidence sources:</b>"
         )
 
         inline_keyboard = {
