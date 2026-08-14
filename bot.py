@@ -1,7 +1,7 @@
 """
-Telegram Bot Interface for VC Due Diligence Copilot with Robust HTML Escaping & Admin Approval Mode.
-Fixes Telegram API 400 parse errors using html.escape.
-Supports /testclient command so Admin can test the approval workflow.
+Telegram Bot Interface for VC Due Diligence Copilot.
+Loads configuration from bot_config.json, sys.argv, or environment variables.
+Prints verbose terminal logs for every incoming message and sent response.
 """
 
 import os
@@ -17,14 +17,35 @@ sys.path.append(os.path.join(os.path.dirname(__file__), ".agents", "skills", "ad
 from vc_due_diligence_orchestrator import VCDueDiligenceOrchestrator, StartupProfile
 
 
-TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-ADMIN_CHAT_ID = os.environ.get("ADMIN_CHAT_ID", "15579099")  # Set from user screenshot
+# Load Config from bot_config.json if present
+CONFIG_FILE = os.path.join(os.path.dirname(__file__), "bot_config.json")
+config_data = {}
+if os.path.exists(CONFIG_FILE):
+    try:
+        with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+            config_data = json.load(f)
+    except Exception as e:
+        print(f"[Config Warning] Failed to read bot_config.json: {e}")
+
+TELEGRAM_BOT_TOKEN = (
+    (sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith("-") else None)
+    or os.environ.get("TELEGRAM_BOT_TOKEN")
+    or config_data.get("token", "")
+)
+
+ADMIN_CHAT_ID = (
+    (sys.argv[2] if len(sys.argv) > 2 else None)
+    or os.environ.get("ADMIN_CHAT_ID")
+    or config_data.get("admin_chat_id", "15579099")
+)
+
 NETLIFY_BASE_URL = "https://incomparable-chebakia-bb5490.netlify.app"
 
 
 class TelegramVCBot:
-    def __init__(self, token: str):
+    def __init__(self, token: str, admin_chat_id: str):
         self.token = token
+        self.admin_chat_id = str(admin_chat_id)
         self.api_url = f"https://api.telegram.org/bot{self.token}"
         self.orchestrator = VCDueDiligenceOrchestrator()
         self.last_update_id = 0
@@ -44,19 +65,22 @@ class TelegramVCBot:
         req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
         try:
             with urllib.request.urlopen(req) as resp:
-                result = json.loads(resp.read().decode("utf-8"))
-                return result
+                res = json.loads(resp.read().decode("utf-8"))
+                print(f"[Bot Success] Delivered message to chat_id={chat_id}")
+                return res
         except Exception as e:
-            print(f"[Telegram Error] Failed to send message to {chat_id}: {e}")
+            print(f"[Bot Error] Failed HTML delivery to {chat_id}: {e}. Retrying without HTML formatting...")
             # Fallback to plain text if HTML parsing failed
             try:
                 payload["parse_mode"] = ""
                 data = json.dumps(payload).encode("utf-8")
                 req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
                 with urllib.request.urlopen(req) as resp:
-                    return json.loads(resp.read().decode("utf-8"))
+                    res = json.loads(resp.read().decode("utf-8"))
+                    print(f"[Bot Success Fallback] Delivered plain text to chat_id={chat_id}")
+                    return res
             except Exception as e2:
-                print(f"[Telegram Error Fallback Failed] {e2}")
+                print(f"[Bot Error Critical] Plain text delivery failed: {e2}")
             return None
 
     def get_updates(self):
@@ -67,7 +91,7 @@ class TelegramVCBot:
                 if data.get("ok"):
                     return data.get("result", [])
         except Exception as e:
-            print(f"[Telegram Error] Polling error: {e}")
+            print(f"[Bot Polling Error] {e}")
         return []
 
     async def handle_message(self, message: dict):
@@ -76,14 +100,16 @@ class TelegramVCBot:
         user_name = message.get("from", {}).get("first_name", "Investor")
         username = message.get("from", {}).get("username", "")
 
+        print(f"\n[Bot Received] Message from {user_name} (chat_id={chat_id}): '{text}'")
+
         if text.startswith("/start"):
             welcome_msg = (
                 f"👋 <b>Welcome, {html.escape(user_name)}!</b>\n\n"
                 f"🛡️ <b>Adaptive Evidence Search — VC Due Diligence Platform</b>\n\n"
                 f"Your Chat ID is: <code>{chat_id}</code>\n"
-                f"<i>(Saved as ADMIN_CHAT_ID for manual approval control)</i>\n\n"
-                f"<b>How to use:</b>\n"
-                f"• Send any startup URL (e.g. <code>Moodro.tech</code>) to run an instant audit.\n"
+                f"Admin Chat ID set to: <code>{self.admin_chat_id}</code>\n\n"
+                f"<b>Commands:</b>\n"
+                f"• Send any startup URL (e.g. <code>Moodro.tech</code>) to run an audit.\n"
                 f"• Type <code>/testclient Moodro.tech</code> to test the Client-to-Admin approval buttons!"
             )
             self.send_message(chat_id, welcome_msg)
@@ -118,7 +144,7 @@ class TelegramVCBot:
             self.send_message(chat_id, admin_msg, reply_markup=approval_keyboard)
             return
 
-        is_admin = (ADMIN_CHAT_ID and str(chat_id) == str(ADMIN_CHAT_ID))
+        is_admin = (self.admin_chat_id and str(chat_id) == str(self.admin_chat_id))
 
         if is_admin:
             # Direct Admin command: execute immediately and send private report
@@ -143,7 +169,7 @@ class TelegramVCBot:
             )
 
             # Notify Admin for Approval
-            if ADMIN_CHAT_ID:
+            if self.admin_chat_id:
                 admin_msg = (
                     f"🔔 <b>NEW AUDIT REQUEST FOR APPROVAL!</b>\n"
                     f"👤 <b>User:</b> {html.escape(user_name)} (@{html.escape(username)}) [ID: {chat_id}]\n"
@@ -156,12 +182,14 @@ class TelegramVCBot:
                         [{"text": "❌ Decline Request", "callback_data": f"decline_{request_id}"}]
                     ]
                 }
-                self.send_message(ADMIN_CHAT_ID, admin_msg, reply_markup=approval_keyboard)
+                self.send_message(self.admin_chat_id, admin_msg, reply_markup=approval_keyboard)
 
     async def handle_callback_query(self, callback: dict):
         callback_id = callback["id"]
         data = callback.get("data", "")
         from_chat_id = str(callback["from"]["id"])
+
+        print(f"[Bot Callback] Received callback '{data}' from {from_chat_id}")
 
         if data.startswith("approve_"):
             req_id = data.replace("approve_", "")
@@ -234,14 +262,15 @@ class TelegramVCBot:
 
     def run(self):
         if not self.token:
-            print("=========================================================================")
-            print("ERROR: TELEGRAM_BOT_TOKEN environment variable is missing!")
-            print("Please set TELEGRAM_BOT_TOKEN='your_token' and run again.")
+            print("\n=========================================================================")
+            print("ERROR: TELEGRAM_BOT_TOKEN is missing!")
+            print("Please pass your token directly: python3 bot.py YOUR_TOKEN")
             print("=========================================================================\n")
             return
 
-        print(f"=========================================================================")
-        print(f"TELEGRAM VC DUE DILIGENCE BOT (ADMIN APPROVAL MODE) IS LIVE...")
+        print(f"\n=========================================================================")
+        print(f"TELEGRAM VC DUE DILIGENCE BOT IS LIVE & LISTENING...")
+        print(f"Admin Chat ID: {self.admin_chat_id}")
         print(f"=========================================================================\n")
 
         while True:
@@ -256,5 +285,5 @@ class TelegramVCBot:
 
 
 if __name__ == "__main__":
-    bot = TelegramVCBot(TELEGRAM_BOT_TOKEN)
+    bot = TelegramVCBot(TELEGRAM_BOT_TOKEN, ADMIN_CHAT_ID)
     bot.run()
