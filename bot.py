@@ -1,7 +1,8 @@
 """
-Telegram Bot Interface for VC Due Diligence Copilot with Admin Control & Auto Netlify Publishing Mode.
-All incoming client requests require Admin approval before executing audits.
-Admin can also run direct audits instantly. Automatically pushes generated reports to Netlify.
+Telegram Bot Interface for VC Due Diligence Copilot with Private Audit Delivery.
+All incoming client requests require Admin approval.
+Generated Due Diligence briefs are delivered PRIVATELY into Telegram to protect confidentiality.
+Public showcase landing page remains static and clean with only 4 demo showcases.
 """
 
 import os
@@ -11,7 +12,6 @@ import time
 import urllib.request
 import urllib.parse
 import asyncio
-import subprocess
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".agents", "skills", "adaptive-ontological-search", "scripts"))
 from vc_due_diligence_orchestrator import VCDueDiligenceOrchestrator, StartupProfile
@@ -38,7 +38,7 @@ class TelegramVCBot:
             "parse_mode": parse_mode
         }
         if reply_markup:
-            payload["reply_markup"] = json.dumps(reply_markup)
+            payload["reply_markup"] = json.dumps(payload).encode("utf-8")
 
         data = json.dumps(payload).encode("utf-8")
         req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
@@ -73,8 +73,8 @@ class TelegramVCBot:
                 f"Your Chat ID is: <code>{chat_id}</code>\n"
                 f"<i>(Save this ID to set ADMIN_CHAT_ID='{chat_id}' for full manual approval control)</i>\n\n"
                 f"<b>To request a Due Diligence Audit:</b>\n"
-                f"Send any startup name or website URL (e.g., <code>https://lensa.ai</code>).\n"
-                f"Our team will approve and deliver the audit brief."
+                f"Send any startup name or website URL (e.g., <code>https://lensa.ai</code> or <code>Moodro.tech</code>).\n"
+                f"Our team will approve and deliver the audit brief privately."
             )
             self.send_message(chat_id, welcome_msg)
             return
@@ -82,9 +82,9 @@ class TelegramVCBot:
         if not text:
             return
 
-        # IF ADMIN (You): Run Audit Instantly
+        # IF ADMIN (You): Run Audit Instantly & Send Privately
         if ADMIN_CHAT_ID and chat_id == str(ADMIN_CHAT_ID):
-            self.send_message(chat_id, f"👑 <b>Admin Command Recognized.</b> Starting audit for: <code>{text}</code>...")
+            self.send_message(chat_id, f"👑 <b>Admin Command Recognized.</b> Executing audit for: <code>{text}</code>...")
             await self.execute_and_send_audit(chat_id, text)
             return
 
@@ -102,10 +102,10 @@ class TelegramVCBot:
             chat_id,
             f"📥 <b>Audit Request Received for:</b> <code>{text}</code>\n\n"
             f"Your request has been logged and queued for Admin review.\n"
-            f"You will receive your Due Diligence brief as soon as it is approved!"
+            f"You will receive your confidential Due Diligence brief right here in Telegram as soon as approved!"
         )
 
-        # Notify Admin for Approval (if ADMIN_CHAT_ID set)
+        # Notify Admin for Approval
         if ADMIN_CHAT_ID:
             admin_msg = (
                 f"🔔 <b>NEW AUDIT REQUEST FOR APPROVAL!</b>\n"
@@ -134,7 +134,7 @@ class TelegramVCBot:
             if req:
                 client_chat_id = req["chat_id"]
                 target_text = req["text"]
-                self.send_message(from_chat_id, f"✅ Request approved! Running audit for <code>{target_text}</code>...")
+                self.send_message(from_chat_id, f"✅ Request approved! Executing audit for <code>{target_text}</code>...")
                 self.send_message(client_chat_id, f"🎉 <b>Request Approved!</b> Generating your Due Diligence brief now...")
                 await self.execute_and_send_audit(client_chat_id, target_text)
 
@@ -148,10 +148,17 @@ class TelegramVCBot:
 
     async def execute_and_send_audit(self, target_chat_id: str, text: str):
         name = text.replace("http://", "").replace("https://", "").split("/")[0].title()
+        
+        # Categorize
+        if "moodro" in text.lower() or "helsing" in text.lower() or "miltech" in text.lower():
+            category = "AI + MilTech"
+        else:
+            category = "AI & Tech Venture"
+
         profile = StartupProfile(
             name=name,
-            category="AI & Tech Venture",
-            website=text if text.startswith("http") else f"https://{text.lower()}.ai",
+            category=category,
+            website=text if text.startswith("http") else f"https://{text.lower()}",
             founders=["Founding Team"],
             stated_mission=f"VC evaluation for {name}",
             target_market="Global Tech Venture Market"
@@ -159,60 +166,34 @@ class TelegramVCBot:
 
         report = await self.orchestrator.analyze_startup(profile)
 
-        # Save to JSON database
-        json_path = os.path.join(os.path.dirname(__file__), "web", "public", "data", "showcase_reports.json")
-        json_path_alt = os.path.join(os.path.dirname(__file__), "web", "data", "showcase_reports.json")
-        os.makedirs(os.path.dirname(json_path), exist_ok=True)
-        os.makedirs(os.path.dirname(json_path_alt), exist_ok=True)
-
-        try:
-            if os.path.exists(json_path):
-                with open(json_path, "r", encoding="utf-8") as f:
-                    existing = json.load(f)
-            else:
-                existing = []
-
-            # Add or update report
-            existing.insert(0, report.dict())
-            with open(json_path, "w", encoding="utf-8") as f:
-                json.dump(existing, f, indent=2, ensure_ascii=False)
-            with open(json_path_alt, "w", encoding="utf-8") as f:
-                json.dump(existing, f, indent=2, ensure_ascii=False)
-
-            print(f"[Netlify Auto-Publish] Saved report for '{name}'. Publishing to GitHub...")
-
-            # Push update to GitHub for auto-deploy on Netlify
-            subprocess.run(
-                f'git add web/ && git commit -m "Auto-publish Due Diligence report for {name}" && git push origin main',
-                shell=True,
-                cwd=os.path.dirname(__file__)
-            )
-
-        except Exception as e:
-            print(f"[Auto-Publish Error] {e}")
-
+        # Private Telegram Delivery
         recommendation_emoji = "🟢" if "STRONG" in report.investment_recommendation else "🟡"
         
         red_flags_text = ""
-        for i, rf in enumerate(report.red_flags[:3], 1):
-            red_flags_text += f"<b>{i}. [{rf['severity']} RISK]</b> {rf['title']}\n<i>Source: {rf['source']}</i>\n\n"
+        for i, rf in enumerate(report.red_flags, 1):
+            red_flags_text += f"<b>{i}. [{rf['severity']} RISK]</b> {rf['title']}\n<i>{rf['evidence']}</i>\n<i>Source: {rf['source']}</i>\n\n"
 
-        teaser = (
-            f"🛡️ <b>DUE DILIGENCE BRIEF: {report.startup_name}</b>\n"
+        questions_text = ""
+        for i, q in enumerate(report.key_questions_for_founders, 1):
+            questions_text += f"• {q}\n"
+
+        private_report = (
+            f"🛡️ <b>CONFIDENTIAL DUE DILIGENCE BRIEF</b>\n"
+            f"<b>Company:</b> {report.startup_name} ({report.category})\n"
             f"━━━━━━━━━━━━━━━━━━━━━━\n"
             f"{recommendation_emoji} <b>Verdict:</b> {report.investment_recommendation}\n"
             f"🎯 <b>Conviction Score:</b> {int(report.conviction_score * 100)}%\n\n"
+            f"📄 <b>Executive Summary:</b>\n{report.executive_summary}\n\n"
             f"🚨 <b>IDENTIFIED RED FLAGS:</b>\n{red_flags_text}"
-            f"👇 <b>View full report with primary evidence sources:</b>"
+            f"⚡ <b>IP MOAT AUDIT:</b>\n"
+            f"• Rating: {report.tech_moat_evaluation.get('moat_rating')}\n"
+            f"• Patents: {report.tech_moat_evaluation.get('patent_count')} Active Patents\n"
+            f"• Dataset: {report.tech_moat_evaluation.get('proprietary_dataset')}\n\n"
+            f"❓ <b>PRIORITY QUESTIONS FOR FOUNDERS:</b>\n{questions_text}\n"
+            f"🔒 <i>Confidential Brief. Generated by Adaptive Evidence Search.</i>"
         )
 
-        inline_keyboard = {
-            "inline_keyboard": [
-                [{"text": "📊 Open Full Report on Netlify", "url": NETLIFY_BASE_URL}]
-            ]
-        }
-
-        self.send_message(target_chat_id, teaser, reply_markup=inline_keyboard)
+        self.send_message(target_chat_id, private_report)
 
     def run(self):
         if not self.token:
@@ -223,7 +204,7 @@ class TelegramVCBot:
             return
 
         print(f"=========================================================================")
-        print(f"TELEGRAM VC DUE DILIGENCE BOT (ADMIN + AUTO-PUBLISH MODE) IS LIVE...")
+        print(f"TELEGRAM VC DUE DILIGENCE BOT (PRIVATE DELIVERY MODE) IS LIVE...")
         print(f"=========================================================================\n")
 
         while True:
