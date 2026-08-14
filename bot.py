@@ -1,8 +1,7 @@
 """
-Telegram Bot Interface for VC Due Diligence Copilot with Rate Limiting.
-Uses Python Standard Library (urllib) to connect to Telegram Bot API with zero external dependencies.
-Receives startup links/names, checks free trial quotas, triggers VCDueDiligenceOrchestrator,
-and sends teaser cards + links to the Netlify Web Viewer.
+Telegram Bot Interface for VC Due Diligence Copilot with Admin Control Mode.
+All incoming client requests require Admin approval before executing audits.
+Admin can also run direct audits instantly.
 """
 
 import os
@@ -18,6 +17,7 @@ from vc_due_diligence_orchestrator import VCDueDiligenceOrchestrator, StartupPro
 
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+ADMIN_CHAT_ID = os.environ.get("ADMIN_CHAT_ID", "")  # Your Telegram Chat ID for approvals
 NETLIFY_BASE_URL = "https://incomparable-chebakia-bb5490.netlify.app"
 
 
@@ -27,10 +27,9 @@ class TelegramVCBot:
         self.api_url = f"https://api.telegram.org/bot{self.token}"
         self.orchestrator = VCDueDiligenceOrchestrator()
         self.last_update_id = 0
-        self.user_usage = {}  # Track free requests per chat_id: {chat_id: count}
-        self.MAX_FREE_AUDITS = 1  # 1 Free trial audit per user before requiring payment
+        self.pending_requests = {}  # {request_id: {chat_id, text, user_name}}
 
-    def send_message(self, chat_id: int, text: str, parse_mode: str = "HTML", reply_markup: dict = None):
+    def send_message(self, chat_id: str, text: str, parse_mode: str = "HTML", reply_markup: dict = None):
         url = f"{self.api_url}/sendMessage"
         payload = {
             "chat_id": chat_id,
@@ -61,18 +60,20 @@ class TelegramVCBot:
         return []
 
     async def handle_message(self, message: dict):
-        chat_id = message["chat"]["id"]
+        chat_id = str(message["chat"]["id"])
         text = message.get("text", "").strip()
         user_name = message.get("from", {}).get("first_name", "Investor")
+        username = message.get("from", {}).get("username", "")
 
         if text.startswith("/start"):
             welcome_msg = (
                 f"👋 <b>Welcome, {user_name}!</b>\n\n"
-                f"🛡️ <b>Adaptive Evidence Search — VC Due Diligence Copilot</b>\n\n"
-                f"<b>How it works:</b>\n"
-                f"Send me any startup name or website link (e.g., <code>https://lensa.ai</code> or <code>Helsing MilTech</code>).\n\n"
-                f"🎁 <b>Free Demo Trial:</b> You have <b>1 Free Trial Report</b>.\n"
-                f"To unlock unlimited searches, upgrade to Pro Unlimited ($299/mo)."
+                f"🛡️ <b>Adaptive Evidence Search — VC Due Diligence Platform</b>\n\n"
+                f"Your Chat ID is: <code>{chat_id}</code>\n"
+                f"<i>(Save this ID to set ADMIN_CHAT_ID='{chat_id}' for full manual approval control)</i>\n\n"
+                f"<b>To request a Due Diligence Audit:</b>\n"
+                f"Send any startup name or website URL (e.g., <code>https://lensa.ai</code>).\n"
+                f"Our team will approve and deliver the audit brief."
             )
             self.send_message(chat_id, welcome_msg)
             return
@@ -80,48 +81,81 @@ class TelegramVCBot:
         if not text:
             return
 
-        # Rate Limiting Check: Max 1 Free Audit per user
-        current_usage = self.user_usage.get(chat_id, 0)
-        if current_usage >= self.MAX_FREE_AUDITS:
-            limit_msg = (
-                f"🔒 <b>Free Trial Limit Reached!</b>\n\n"
-                f"You have used your <b>1/1 free demo report</b>.\n\n"
-                f"To analyze unlimited startups and access Founder Q&A generators, activate a Pro subscription ($299/mo) or order a single report ($49)."
-            )
-            pay_keyboard = {
-                "inline_keyboard": [
-                    [{"text": "💳 Upgrade to Pro ($299/mo)", "url": f"{NETLIFY_BASE_URL}#pricing"}],
-                    [{"text": "📄 Order Single Report ($49)", "url": f"{NETLIFY_BASE_URL}#pricing"}]
-                ]
-            }
-            self.send_message(chat_id, limit_msg, reply_markup=pay_keyboard)
+        # IF ADMIN (You): Run Audit Instantly
+        if ADMIN_CHAT_ID and chat_id == str(ADMIN_CHAT_ID):
+            self.send_message(chat_id, f"👑 <b>Admin Command Recognized.</b> Starting audit for: <code>{text}</code>...")
+            await self.execute_and_send_audit(chat_id, text)
             return
 
-        # Increment usage counter for this chat_id
-        self.user_usage[chat_id] = current_usage + 1
+        # IF CLIENT: Send request to Admin for manual approval
+        request_id = str(int(time.time()))
+        self.pending_requests[request_id] = {
+            "chat_id": chat_id,
+            "text": text,
+            "user_name": user_name,
+            "username": username
+        }
 
-        # Notify user analysis started
+        # Inform Client
         self.send_message(
             chat_id,
-            f"⏳ <b>Audit Started for:</b> <code>{text}</code>\n\n"
-            f"Scanning primary patents, ITAR registries, employee mobility, and court dockets...\n"
-            f"<i>Estimated time: 10–15 seconds.</i>"
+            f"📥 <b>Audit Request Received for:</b> <code>{text}</code>\n\n"
+            f"Your request has been logged and queued for Admin review.\n"
+            f"You will receive your Due Diligence brief as soon as it is approved!"
         )
 
-        # Build startup profile
+        # Notify Admin for Approval (if ADMIN_CHAT_ID set)
+        if ADMIN_CHAT_ID:
+            admin_msg = (
+                f"🔔 <b>NEW AUDIT REQUEST FOR APPROVAL!</b>\n"
+                f"👤 <b>User:</b> {user_name} (@{username}) [ID: {chat_id}]\n"
+                f"🎯 <b>Requested Startup:</b> <code>{text}</code>\n\n"
+                f"Do you approve running this Due Diligence audit?"
+            )
+            approval_keyboard = {
+                "inline_keyboard": [
+                    [{"text": f"✅ Approve & Run ({text[:15]})", "callback_data": f"approve_{request_id}"}],
+                    [{"text": "❌ Decline Request", "callback_data": f"decline_{request_id}"}]
+                ]
+            }
+            self.send_message(ADMIN_CHAT_ID, admin_msg, reply_markup=approval_keyboard)
+        else:
+            print(f"[ADMIN NOTICE] Request from {user_name} for '{text}'. ADMIN_CHAT_ID is not set yet.")
+
+    async def handle_callback_query(self, callback: dict):
+        callback_id = callback["id"]
+        data = callback.get("data", "")
+        from_chat_id = str(callback["from"]["id"])
+
+        if data.startswith("approve_"):
+            req_id = data.replace("approve_", "")
+            req = self.pending_requests.get(req_id)
+            if req:
+                client_chat_id = req["chat_id"]
+                target_text = req["text"]
+                self.send_message(from_chat_id, f"✅ Request approved! Running audit for <code>{target_text}</code>...")
+                self.send_message(client_chat_id, f"🎉 <b>Request Approved!</b> Generating your Due Diligence brief now...")
+                await self.execute_and_send_audit(client_chat_id, target_text)
+
+        elif data.startswith("decline_"):
+            req_id = data.replace("decline_", "")
+            req = self.pending_requests.get(req_id)
+            if req:
+                client_chat_id = req["chat_id"]
+                self.send_message(from_chat_id, f"❌ Request declined.")
+                self.send_message(client_chat_id, f"ℹ️ Your audit request could not be processed at this time.")
+
+    async def execute_and_send_audit(self, target_chat_id: str, text: str):
         profile = StartupProfile(
             name=text.replace("http://", "").replace("https://", "").split("/")[0].title(),
             category="AI & Tech Venture",
             website=text if text.startswith("http") else f"https://{text.lower()}.ai",
             founders=["Founding Team"],
-            stated_mission=f"AI venture evaluation for {text}",
+            stated_mission=f"VC evaluation for {text}",
             target_market="Global Tech Venture Market"
         )
 
-        # Execute Search Engine
         report = await self.orchestrator.analyze_startup(profile)
-
-        # Format Telegram Teaser Card
         recommendation_emoji = "🟢" if "STRONG" in report.investment_recommendation else "🟡"
         
         red_flags_text = ""
@@ -134,7 +168,6 @@ class TelegramVCBot:
             f"{recommendation_emoji} <b>Verdict:</b> {report.investment_recommendation}\n"
             f"🎯 <b>Conviction Score:</b> {int(report.conviction_score * 100)}%\n\n"
             f"🚨 <b>IDENTIFIED RED FLAGS:</b>\n{red_flags_text}"
-            f"💡 <b>Market Dynamics:</b> {', '.join(report.lightrag_dual_context.get('high_level_themes', []))}\n\n"
             f"👇 <b>View full report with primary evidence sources:</b>"
         )
 
@@ -144,18 +177,18 @@ class TelegramVCBot:
             ]
         }
 
-        self.send_message(chat_id, teaser, reply_markup=inline_keyboard)
+        self.send_message(target_chat_id, teaser, reply_markup=inline_keyboard)
 
     def run(self):
         if not self.token:
             print("=========================================================================")
             print("ERROR: TELEGRAM_BOT_TOKEN environment variable is missing!")
-            print("Please set TELEGRAM_BOT_TOKEN='your_token_from_botfather' and run again.")
+            print("Please set TELEGRAM_BOT_TOKEN='your_token' and run again.")
             print("=========================================================================\n")
             return
 
         print(f"=========================================================================")
-        print(f"TELEGRAM VC DUE DILIGENCE BOT IS LIVE & LISTENING...")
+        print(f"TELEGRAM VC DUE DILIGENCE BOT (ADMIN CONTROL MODE) IS LIVE...")
         print(f"=========================================================================\n")
 
         while True:
@@ -164,10 +197,11 @@ class TelegramVCBot:
                 self.last_update_id = update["update_id"]
                 if "message" in update:
                     asyncio.run(self.handle_message(update["message"]))
+                elif "callback_query" in update:
+                    asyncio.run(self.handle_callback_query(update["callback_query"]))
             time.sleep(1)
 
 
 if __name__ == "__main__":
-    token = sys.argv[1] if len(sys.argv) > 1 else os.environ.get("TELEGRAM_BOT_TOKEN", "")
-    bot = TelegramVCBot(token)
+    bot = TelegramVCBot(TELEGRAM_BOT_TOKEN)
     bot.run()
