@@ -1161,11 +1161,16 @@
           <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:20px; line-height:1.6;">
             We have received your audit request for <strong>${startup}</strong>. Our team is processing the primary evidence search.
           </p>
-          <div style="background:var(--bg-surface); padding:16px; border-radius:8px; border:1px solid var(--border-dim); margin-bottom:24px; text-align:left; font-size:0.85rem;">
+          <div style="background:var(--bg-surface); padding:16px; border-radius:8px; border:1px solid var(--border-dim); margin-bottom:20px; text-align:left; font-size:0.85rem;">
             <div><strong>Company:</strong> ${startup}</div>
             <div style="margin-top:4px;"><strong>Notification Email:</strong> ${email}</div>
           </div>
-          <button class="btn" style="width:100%; padding:12px;" onclick="closeModal()">Done</button>
+          <div style="margin-bottom:12px;">
+            <a href="https://t.me/AllmaxDreamsBot" target="_blank" class="btn" style="width:100%; padding:12px; display:inline-block; box-sizing:border-box;">
+              📱 Open Live Status in Telegram Bot
+            </a>
+          </div>
+          <button class="btn btn-outline" style="width:100%; padding:10px; box-sizing:border-box;" onclick="closeModal()">Close</button>
         </div>
       `;
     }
