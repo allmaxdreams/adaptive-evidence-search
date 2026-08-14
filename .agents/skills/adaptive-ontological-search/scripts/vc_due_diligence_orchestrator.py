@@ -70,7 +70,13 @@ class VCDueDiligenceOrchestrator:
 
         # Automatically detect category if keyword present
         name_lower = profile.name.lower()
-        if "moodro" in name_lower or "helsing" in name_lower or "defense" in name_lower or "miltech" in name_lower:
+        mission_lower = profile.stated_mission.lower()
+        if (
+            "moodro" in name_lower or "helsing" in name_lower or "fourthlaw" in name_lower or "thefourthlaw" in name_lower
+            or "defense" in name_lower or "miltech" in name_lower or "drone" in name_lower or "fpv" in name_lower
+            or "uav" in name_lower or "robot" in name_lower
+            or "miltech" in profile.category.lower() or "defense" in profile.category.lower()
+        ):
             profile.category = "AI + MilTech"
 
         # Step 1: Research Contract Formulation
