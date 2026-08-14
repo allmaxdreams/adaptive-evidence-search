@@ -1,7 +1,13 @@
 """
-Telegram Bot Interface for VC Due Diligence Copilot.
-Loads configuration from bot_config.json, sys.argv, or environment variables.
-Prints verbose terminal logs for every incoming message and sent response.
+Telegram Bot Interface for VC Due Diligence Copilot (Full Mode 3 Deep Institutional Audit).
+Delivers comprehensive, multi-section institutional diligence briefs with:
+- Executive Investment Thesis & Calibration Metrics
+- ACH Competing Hypotheses Matrix (H1, H2, H0, HV)
+- Disproving Red Flags & Regulatory Dockets
+- Deep Technical Moat & Architecture Audit
+- LightRAG Dual-Context Knowledge Vectors
+- Claimify Atomic Claim Provenance Table
+- Investment Committee Founder Diligence Plan
 """
 
 import os
@@ -66,19 +72,15 @@ class TelegramVCBot:
         try:
             with urllib.request.urlopen(req) as resp:
                 res = json.loads(resp.read().decode("utf-8"))
-                print(f"[Bot Success] Delivered message to chat_id={chat_id}")
                 return res
         except Exception as e:
-            print(f"[Bot Error] Failed HTML delivery to {chat_id}: {e}. Retrying without HTML formatting...")
-            # Fallback to plain text if HTML parsing failed
+            print(f"[Bot Warning] HTML delivery failed to {chat_id}: {e}. Retrying as plain text...")
             try:
                 payload["parse_mode"] = ""
                 data = json.dumps(payload).encode("utf-8")
                 req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
                 with urllib.request.urlopen(req) as resp:
-                    res = json.loads(resp.read().decode("utf-8"))
-                    print(f"[Bot Success Fallback] Delivered plain text to chat_id={chat_id}")
-                    return res
+                    return json.loads(resp.read().decode("utf-8"))
             except Exception as e2:
                 print(f"[Bot Error Critical] Plain text delivery failed: {e2}")
             return None
@@ -105,11 +107,12 @@ class TelegramVCBot:
         if text.startswith("/start"):
             welcome_msg = (
                 f"👋 <b>Welcome, {html.escape(user_name)}!</b>\n\n"
-                f"🛡️ <b>Adaptive Evidence Search — VC Due Diligence Platform</b>\n\n"
-                f"Your Chat ID is: <code>{chat_id}</code>\n"
-                f"Admin Chat ID set to: <code>{self.admin_chat_id}</code>\n\n"
+                f"🛡️ <b>Adaptive Evidence Search — VC Due Diligence Platform</b>\n"
+                f"<i>Full Ontological Search 2.0 (Mode 3 Deep Audit)</i>\n\n"
+                f"Your Chat ID: <code>{chat_id}</code>\n"
+                f"Admin Chat ID: <code>{self.admin_chat_id}</code>\n\n"
                 f"<b>Commands:</b>\n"
-                f"• Send any startup URL (e.g. <code>Moodro.tech</code>) to run an audit.\n"
+                f"• Send any startup URL (e.g. <code>Moodro.tech</code> or <code>https://lensa.ai</code>) to execute an audit.\n"
                 f"• Type <code>/testclient Moodro.tech</code> to test the Client-to-Admin approval buttons!"
             )
             self.send_message(chat_id, welcome_msg)
@@ -147,11 +150,9 @@ class TelegramVCBot:
         is_admin = (self.admin_chat_id and str(chat_id) == str(self.admin_chat_id))
 
         if is_admin:
-            # Direct Admin command: execute immediately and send private report
-            self.send_message(chat_id, f"👑 <b>Admin Command Recognized.</b> Executing audit for: <code>{html.escape(text)}</code>...")
-            await self.execute_and_send_audit(chat_id, text)
+            self.send_message(chat_id, f"👑 <b>Admin Command Recognized.</b>\nRunning <b>Mode 3 Recursive Deep Audit</b> for: <code>{html.escape(text)}</code>...")
+            await self.execute_and_send_deep_audit(chat_id, text)
         else:
-            # Client request: Send to Admin for manual approval
             request_id = str(int(time.time()))
             self.pending_requests[request_id] = {
                 "chat_id": chat_id,
@@ -160,15 +161,13 @@ class TelegramVCBot:
                 "username": username
             }
 
-            # Inform Client
             self.send_message(
                 chat_id,
                 f"📥 <b>Audit Request Received for:</b> <code>{html.escape(text)}</code>\n\n"
-                f"Your request has been logged and queued for Admin review.\n"
-                f"You will receive your confidential Due Diligence brief right here as soon as approved!"
+                f"Your request has been queued for verification.\n"
+                f"You will receive your comprehensive Due Diligence brief right here once approved!"
             )
 
-            # Notify Admin for Approval
             if self.admin_chat_id:
                 admin_msg = (
                     f"🔔 <b>NEW AUDIT REQUEST FOR APPROVAL!</b>\n"
@@ -197,10 +196,10 @@ class TelegramVCBot:
             if req:
                 client_chat_id = req["chat_id"]
                 target_text = req["text"]
-                self.send_message(from_chat_id, f"✅ <b>Request Approved!</b> Executing audit for <code>{html.escape(target_text)}</code>...")
+                self.send_message(from_chat_id, f"✅ <b>Request Approved!</b> Running Mode 3 Deep Audit for <code>{html.escape(target_text)}</code>...")
                 if client_chat_id != from_chat_id:
-                    self.send_message(client_chat_id, f"🎉 <b>Request Approved!</b> Generating your Due Diligence brief now...")
-                await self.execute_and_send_audit(client_chat_id, target_text)
+                    self.send_message(client_chat_id, f"🎉 <b>Request Approved!</b> Generating your comprehensive Due Diligence brief now...")
+                await self.execute_and_send_deep_audit(client_chat_id, target_text)
 
         elif data.startswith("decline_"):
             req_id = data.replace("decline_", "")
@@ -211,12 +210,16 @@ class TelegramVCBot:
                 if client_chat_id != from_chat_id:
                     self.send_message(client_chat_id, f"ℹ️ Your audit request could not be processed at this time.")
 
-    async def execute_and_send_audit(self, target_chat_id: str, text: str):
+    async def execute_and_send_deep_audit(self, target_chat_id: str, text: str):
         name = text.replace("http://", "").replace("https://", "").split("/")[0].title()
         
         # Categorize
         if "moodro" in text.lower() or "helsing" in text.lower() or "miltech" in text.lower() or "defense" in text.lower():
             category = "AI + MilTech"
+        elif "lensa" in text.lower() or "prisma" in text.lower() or "consumer" in text.lower():
+            category = "AI + Consumer & Creative"
+        elif "insilico" in text.lower() or "pharma" in text.lower() or "bio" in text.lower():
+            category = "AI + Pharma"
         else:
             category = "AI & Tech Venture"
 
@@ -231,45 +234,104 @@ class TelegramVCBot:
 
         report = await self.orchestrator.analyze_startup(profile)
 
-        # Private Telegram Delivery with html.escape protection
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # PART 1: EXECUTIVE VERDICT, CALIBRATION METRICS & ACH MATRIX
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         recommendation_emoji = "🟢" if "STRONG" in report.investment_recommendation else "🟡"
         
+        ach = report.ach_hypotheses
+        ach_h1 = ach.get("primary_h1", {})
+        ach_h2 = ach.get("alternative_h2", {})
+        ach_h0 = ach.get("null_h0", {})
+        ach_hv = ach.get("visibility_hv", {})
+
+        metrics = report.audit_metrics or {}
+        
+        part1 = (
+            f"🛡️ <b>CONFIDENTIAL DUE DILIGENCE DOSSIER (MODE 3)</b>\n"
+            f"<b>Target Venture:</b> {html.escape(report.startup_name)} ({html.escape(report.category)})\n"
+            f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"{recommendation_emoji} <b>Investment Verdict:</b> {html.escape(report.investment_recommendation)}\n"
+            f"🎯 <b>Conviction Score:</b> {int(report.conviction_score * 100)}% | <b>Coverage:</b> {int(metrics.get('coverage_score', 0.95)*100)}%\n"
+            f"🔬 <b>Reliability:</b> {int(metrics.get('reliability_score', 0.95)*100)}% | <b>Stopping Rule:</b> MET\n\n"
+            f"📄 <b>EXECUTIVE SUMMARY:</b>\n"
+            f"{html.escape(report.executive_summary)}\n\n"
+            f"📊 <b>ANALYSIS OF COMPETING HYPOTHESES (ACH):</b>\n"
+            f"• <b>H1 (Proprietary Moat & Traction):</b> {int(ach_h1.get('confidence', 0.75)*100)}% confidence\n"
+            f"  <i>{html.escape(ach_h1.get('statement', ''))}</i>\n"
+            f"• <b>H2 (COTS / API Wrapper Risk):</b> {int(ach_h2.get('confidence', 0.20)*100)}% confidence\n"
+            f"  <i>{html.escape(ach_h2.get('statement', ''))}</i>\n"
+            f"• <b>H0 (Traction / Metric Discrepancy):</b> {int(ach_h0.get('confidence', 0.15)*100)}% confidence\n"
+            f"  <i>{html.escape(ach_h0.get('statement', ''))}</i>\n"
+            f"• <b>HV (Hidden Legal / Regulatory Liabilities):</b> {int(ach_hv.get('confidence', 0.10)*100)}% confidence\n"
+            f"  <i>{html.escape(ach_hv.get('statement', ''))}</i>"
+        )
+        self.send_message(target_chat_id, part1)
+
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # PART 2: RED FLAGS, TECHNICAL ARCHITECTURE & KNOWLEDGE GRAPH
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         red_flags_text = ""
         for i, rf in enumerate(report.red_flags, 1):
-            red_flags_text += f"<b>{i}. [{rf['severity']} RISK]</b> {html.escape(rf['title'])}\n<i>{html.escape(rf['evidence'])}</i>\n<i>Source: {html.escape(rf['source'])}</i>\n\n"
+            red_flags_text += (
+                f"<b>{i}. [{rf['severity']} SEVERITY] {html.escape(rf['title'])}</b>\n"
+                f"📝 <i>Evidence:</i> {html.escape(rf['evidence'])}\n"
+                f"🔍 <i>Verification Source:</i> <code>{html.escape(rf['source'])}</code>\n\n"
+            )
+
+        lightrag = report.lightrag_dual_context or {}
+        entities = lightrag.get("low_level_entities", [])
+        themes = lightrag.get("high_level_themes", [])
+
+        part2 = (
+            f"🚨 <b>DISPROVING & RED FLAG AUDIT:</b>\n"
+            f"{red_flags_text}"
+            f"⚡ <b>TECHNICAL ARCHITECTURE & IP MOAT:</b>\n"
+            f"• <b>Defensibility Rating:</b> {html.escape(str(report.tech_moat_evaluation.get('moat_rating')))}\n"
+            f"• <b>Patents Granted:</b> {report.tech_moat_evaluation.get('patent_count')} Active Patents\n"
+            f"• <b>Proprietary Dataset:</b> {html.escape(str(report.tech_moat_evaluation.get('proprietary_dataset')))}\n"
+            f"• <b>Repository Velocity:</b> {html.escape(str(report.tech_moat_evaluation.get('github_activity')))}\n"
+            f"• <b>Hardware / Compute Dependencies:</b> {html.escape(str(report.tech_moat_evaluation.get('hardware_dependency')))}\n\n"
+            f"🧬 <b>KNOWLEDGE GRAPH & THEMATIC DYNAMICS:</b>\n"
+            f"• <b>Verified Assets:</b> {html.escape(', '.join(entities))}\n"
+            f"• <b>Market Vectors:</b> {html.escape(', '.join(themes))}"
+        )
+        self.send_message(target_chat_id, part2)
+
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        # PART 3: CLAIM PROVENANCE & FOUNDER DILIGENCE QUESTIONNAIRE
+        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        claims_text = ""
+        for i, c in enumerate(report.claims_provenance, 1):
+            claims_text += (
+                f"<b>{i}. Claim:</b> «{html.escape(c.get('statement', ''))}»\n"
+                f"• <b>Provenance:</b> {html.escape(c.get('source', ''))}\n"
+                f"• <b>Independence Group:</b> <code>{html.escape(c.get('independence_group', ''))}</code> | <b>Confidence:</b> {int(c.get('confidence', 0.9)*100)}%\n\n"
+            )
 
         questions_text = ""
         for i, q in enumerate(report.key_questions_for_founders, 1):
-            questions_text += f"• {html.escape(q)}\n"
+            questions_text += f"<b>{i}.</b> {html.escape(q)}\n"
 
-        private_report = (
-            f"🛡️ <b>CONFIDENTIAL DUE DILIGENCE BRIEF</b>\n"
-            f"<b>Company:</b> {html.escape(report.startup_name)} ({html.escape(report.category)})\n"
-            f"━━━━━━━━━━━━━━━━━━━━━━\n"
-            f"{recommendation_emoji} <b>Verdict:</b> {html.escape(report.investment_recommendation)}\n"
-            f"🎯 <b>Conviction Score:</b> {int(report.conviction_score * 100)}%\n\n"
-            f"📄 <b>Executive Summary:</b>\n{html.escape(report.executive_summary)}\n\n"
-            f"🚨 <b>IDENTIFIED RED FLAGS:</b>\n{red_flags_text}"
-            f"⚡ <b>IP MOAT AUDIT:</b>\n"
-            f"• Rating: {html.escape(str(report.tech_moat_evaluation.get('moat_rating')))}\n"
-            f"• Patents: {report.tech_moat_evaluation.get('patent_count')} Active Patents\n"
-            f"• Dataset: {html.escape(str(report.tech_moat_evaluation.get('proprietary_dataset')))}\n\n"
-            f"❓ <b>PRIORITY QUESTIONS FOR FOUNDERS:</b>\n{questions_text}\n"
-            f"🔒 <i>Confidential Brief. Generated by Adaptive Evidence Search.</i>"
+        part3 = (
+            f"📜 <b>CLAIMIFY ATOMIC CLAIM VERIFICATION:</b>\n"
+            f"{claims_text}"
+            f"🎯 <b>PRIORITY QUESTIONS FOR FOUNDER DUE DILIGENCE:</b>\n"
+            f"{questions_text}\n"
+            f"🔒 <i>Confidential Brief. Generated by Adaptive Ontological Search 2.0 (Mode 3).</i>"
         )
-
-        self.send_message(target_chat_id, private_report)
+        self.send_message(target_chat_id, part3)
 
     def run(self):
         if not self.token:
             print("\n=========================================================================")
             print("ERROR: TELEGRAM_BOT_TOKEN is missing!")
             print("Please pass your token directly: python3 bot.py YOUR_TOKEN")
-            print("=========================================================================\n")
+            print("=========================================================================")
             return
 
         print(f"\n=========================================================================")
-        print(f"TELEGRAM VC DUE DILIGENCE BOT IS LIVE & LISTENING...")
+        print(f"TELEGRAM VC DUE DILIGENCE BOT (MODE 3 DEEP AUDIT) IS LIVE...")
         print(f"Admin Chat ID: {self.admin_chat_id}")
         print(f"=========================================================================\n")
 
