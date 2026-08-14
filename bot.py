@@ -1,14 +1,14 @@
 """
-Telegram Bot Interface for VC Due Diligence Copilot with Private Audit Delivery.
-All incoming client requests require Admin approval.
-Generated Due Diligence briefs are delivered PRIVATELY into Telegram to protect confidentiality.
-Public showcase landing page remains static and clean with only 4 demo showcases.
+Telegram Bot Interface for VC Due Diligence Copilot with Robust HTML Escaping & Admin Approval Mode.
+Fixes Telegram API 400 parse errors using html.escape.
+Supports /testclient command so Admin can test the approval workflow.
 """
 
 import os
 import sys
 import json
 import time
+import html
 import urllib.request
 import urllib.parse
 import asyncio
@@ -18,7 +18,7 @@ from vc_due_diligence_orchestrator import VCDueDiligenceOrchestrator, StartupPro
 
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-ADMIN_CHAT_ID = os.environ.get("ADMIN_CHAT_ID", "")
+ADMIN_CHAT_ID = os.environ.get("ADMIN_CHAT_ID", "15579099")  # Set from user screenshot
 NETLIFY_BASE_URL = "https://incomparable-chebakia-bb5490.netlify.app"
 
 
@@ -33,20 +33,30 @@ class TelegramVCBot:
     def send_message(self, chat_id: str, text: str, parse_mode: str = "HTML", reply_markup: dict = None):
         url = f"{self.api_url}/sendMessage"
         payload = {
-            "chat_id": chat_id,
+            "chat_id": str(chat_id),
             "text": text,
             "parse_mode": parse_mode
         }
         if reply_markup:
-            payload["reply_markup"] = json.dumps(payload).encode("utf-8")
+            payload["reply_markup"] = json.dumps(reply_markup)
 
         data = json.dumps(payload).encode("utf-8")
         req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
         try:
             with urllib.request.urlopen(req) as resp:
-                return json.loads(resp.read().decode("utf-8"))
+                result = json.loads(resp.read().decode("utf-8"))
+                return result
         except Exception as e:
-            print(f"[Telegram Error] Failed to send message: {e}")
+            print(f"[Telegram Error] Failed to send message to {chat_id}: {e}")
+            # Fallback to plain text if HTML parsing failed
+            try:
+                payload["parse_mode"] = ""
+                data = json.dumps(payload).encode("utf-8")
+                req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
+                with urllib.request.urlopen(req) as resp:
+                    return json.loads(resp.read().decode("utf-8"))
+            except Exception as e2:
+                print(f"[Telegram Error Fallback Failed] {e2}")
             return None
 
     def get_updates(self):
@@ -68,13 +78,13 @@ class TelegramVCBot:
 
         if text.startswith("/start"):
             welcome_msg = (
-                f"👋 <b>Welcome, {user_name}!</b>\n\n"
+                f"👋 <b>Welcome, {html.escape(user_name)}!</b>\n\n"
                 f"🛡️ <b>Adaptive Evidence Search — VC Due Diligence Platform</b>\n\n"
                 f"Your Chat ID is: <code>{chat_id}</code>\n"
-                f"<i>(Save this ID to set ADMIN_CHAT_ID='{chat_id}' for full manual approval control)</i>\n\n"
-                f"<b>To request a Due Diligence Audit:</b>\n"
-                f"Send any startup name or website URL (e.g., <code>https://lensa.ai</code> or <code>Moodro.tech</code>).\n"
-                f"Our team will approve and deliver the audit brief privately."
+                f"<i>(Saved as ADMIN_CHAT_ID for manual approval control)</i>\n\n"
+                f"<b>How to use:</b>\n"
+                f"• Send any startup URL (e.g. <code>Moodro.tech</code>) to run an instant audit.\n"
+                f"• Type <code>/testclient Moodro.tech</code> to test the Client-to-Admin approval buttons!"
             )
             self.send_message(chat_id, welcome_msg)
             return
@@ -82,46 +92,71 @@ class TelegramVCBot:
         if not text:
             return
 
-        # IF ADMIN (You): Run Audit Instantly & Send Privately
-        if ADMIN_CHAT_ID and chat_id == str(ADMIN_CHAT_ID):
-            self.send_message(chat_id, f"👑 <b>Admin Command Recognized.</b> Executing audit for: <code>{text}</code>...")
-            await self.execute_and_send_audit(chat_id, text)
-            return
-
-        # IF CLIENT: Send request to Admin for manual approval
-        request_id = str(int(time.time()))
-        self.pending_requests[request_id] = {
-            "chat_id": chat_id,
-            "text": text,
-            "user_name": user_name,
-            "username": username
-        }
-
-        # Inform Client
-        self.send_message(
-            chat_id,
-            f"📥 <b>Audit Request Received for:</b> <code>{text}</code>\n\n"
-            f"Your request has been logged and queued for Admin review.\n"
-            f"You will receive your confidential Due Diligence brief right here in Telegram as soon as approved!"
-        )
-
-        # Notify Admin for Approval
-        if ADMIN_CHAT_ID:
+        # SIMULATE CLIENT REQUEST FOR ADMIN TESTING
+        if text.startswith("/testclient"):
+            parts = text.split(maxsplit=1)
+            target_url = parts[1] if len(parts) > 1 else "Moodro.tech"
+            request_id = str(int(time.time()))
+            self.pending_requests[request_id] = {
+                "chat_id": chat_id,
+                "text": target_url,
+                "user_name": "Test Client (Simulated)",
+                "username": "client_demo"
+            }
             admin_msg = (
                 f"🔔 <b>NEW AUDIT REQUEST FOR APPROVAL!</b>\n"
-                f"👤 <b>User:</b> {user_name} (@{username}) [ID: {chat_id}]\n"
-                f"🎯 <b>Requested Startup:</b> <code>{text}</code>\n\n"
+                f"👤 <b>User:</b> Test Client (@client_demo) [ID: 9999999]\n"
+                f"🎯 <b>Requested Startup:</b> <code>{html.escape(target_url)}</code>\n\n"
                 f"Do you approve running this Due Diligence audit?"
             )
             approval_keyboard = {
                 "inline_keyboard": [
-                    [{"text": f"✅ Approve & Run ({text[:15]})", "callback_data": f"approve_{request_id}"}],
+                    [{"text": f"✅ Approve & Run ({target_url[:15]})", "callback_data": f"approve_{request_id}"}],
                     [{"text": "❌ Decline Request", "callback_data": f"decline_{request_id}"}]
                 ]
             }
-            self.send_message(ADMIN_CHAT_ID, admin_msg, reply_markup=approval_keyboard)
+            self.send_message(chat_id, admin_msg, reply_markup=approval_keyboard)
+            return
+
+        is_admin = (ADMIN_CHAT_ID and str(chat_id) == str(ADMIN_CHAT_ID))
+
+        if is_admin:
+            # Direct Admin command: execute immediately and send private report
+            self.send_message(chat_id, f"👑 <b>Admin Command Recognized.</b> Executing audit for: <code>{html.escape(text)}</code>...")
+            await self.execute_and_send_audit(chat_id, text)
         else:
-            print(f"[ADMIN NOTICE] Request from {user_name} for '{text}'. ADMIN_CHAT_ID is not set yet.")
+            # Client request: Send to Admin for manual approval
+            request_id = str(int(time.time()))
+            self.pending_requests[request_id] = {
+                "chat_id": chat_id,
+                "text": text,
+                "user_name": user_name,
+                "username": username
+            }
+
+            # Inform Client
+            self.send_message(
+                chat_id,
+                f"📥 <b>Audit Request Received for:</b> <code>{html.escape(text)}</code>\n\n"
+                f"Your request has been logged and queued for Admin review.\n"
+                f"You will receive your confidential Due Diligence brief right here as soon as approved!"
+            )
+
+            # Notify Admin for Approval
+            if ADMIN_CHAT_ID:
+                admin_msg = (
+                    f"🔔 <b>NEW AUDIT REQUEST FOR APPROVAL!</b>\n"
+                    f"👤 <b>User:</b> {html.escape(user_name)} (@{html.escape(username)}) [ID: {chat_id}]\n"
+                    f"🎯 <b>Requested Startup:</b> <code>{html.escape(text)}</code>\n\n"
+                    f"Do you approve running this Due Diligence audit?"
+                )
+                approval_keyboard = {
+                    "inline_keyboard": [
+                        [{"text": f"✅ Approve & Run ({text[:15]})", "callback_data": f"approve_{request_id}"}],
+                        [{"text": "❌ Decline Request", "callback_data": f"decline_{request_id}"}]
+                    ]
+                }
+                self.send_message(ADMIN_CHAT_ID, admin_msg, reply_markup=approval_keyboard)
 
     async def handle_callback_query(self, callback: dict):
         callback_id = callback["id"]
@@ -134,8 +169,9 @@ class TelegramVCBot:
             if req:
                 client_chat_id = req["chat_id"]
                 target_text = req["text"]
-                self.send_message(from_chat_id, f"✅ Request approved! Executing audit for <code>{target_text}</code>...")
-                self.send_message(client_chat_id, f"🎉 <b>Request Approved!</b> Generating your Due Diligence brief now...")
+                self.send_message(from_chat_id, f"✅ <b>Request Approved!</b> Executing audit for <code>{html.escape(target_text)}</code>...")
+                if client_chat_id != from_chat_id:
+                    self.send_message(client_chat_id, f"🎉 <b>Request Approved!</b> Generating your Due Diligence brief now...")
                 await self.execute_and_send_audit(client_chat_id, target_text)
 
         elif data.startswith("decline_"):
@@ -144,13 +180,14 @@ class TelegramVCBot:
             if req:
                 client_chat_id = req["chat_id"]
                 self.send_message(from_chat_id, f"❌ Request declined.")
-                self.send_message(client_chat_id, f"ℹ️ Your audit request could not be processed at this time.")
+                if client_chat_id != from_chat_id:
+                    self.send_message(client_chat_id, f"ℹ️ Your audit request could not be processed at this time.")
 
     async def execute_and_send_audit(self, target_chat_id: str, text: str):
         name = text.replace("http://", "").replace("https://", "").split("/")[0].title()
         
         # Categorize
-        if "moodro" in text.lower() or "helsing" in text.lower() or "miltech" in text.lower():
+        if "moodro" in text.lower() or "helsing" in text.lower() or "miltech" in text.lower() or "defense" in text.lower():
             category = "AI + MilTech"
         else:
             category = "AI & Tech Venture"
@@ -166,29 +203,29 @@ class TelegramVCBot:
 
         report = await self.orchestrator.analyze_startup(profile)
 
-        # Private Telegram Delivery
+        # Private Telegram Delivery with html.escape protection
         recommendation_emoji = "🟢" if "STRONG" in report.investment_recommendation else "🟡"
         
         red_flags_text = ""
         for i, rf in enumerate(report.red_flags, 1):
-            red_flags_text += f"<b>{i}. [{rf['severity']} RISK]</b> {rf['title']}\n<i>{rf['evidence']}</i>\n<i>Source: {rf['source']}</i>\n\n"
+            red_flags_text += f"<b>{i}. [{rf['severity']} RISK]</b> {html.escape(rf['title'])}\n<i>{html.escape(rf['evidence'])}</i>\n<i>Source: {html.escape(rf['source'])}</i>\n\n"
 
         questions_text = ""
         for i, q in enumerate(report.key_questions_for_founders, 1):
-            questions_text += f"• {q}\n"
+            questions_text += f"• {html.escape(q)}\n"
 
         private_report = (
             f"🛡️ <b>CONFIDENTIAL DUE DILIGENCE BRIEF</b>\n"
-            f"<b>Company:</b> {report.startup_name} ({report.category})\n"
+            f"<b>Company:</b> {html.escape(report.startup_name)} ({html.escape(report.category)})\n"
             f"━━━━━━━━━━━━━━━━━━━━━━\n"
-            f"{recommendation_emoji} <b>Verdict:</b> {report.investment_recommendation}\n"
+            f"{recommendation_emoji} <b>Verdict:</b> {html.escape(report.investment_recommendation)}\n"
             f"🎯 <b>Conviction Score:</b> {int(report.conviction_score * 100)}%\n\n"
-            f"📄 <b>Executive Summary:</b>\n{report.executive_summary}\n\n"
+            f"📄 <b>Executive Summary:</b>\n{html.escape(report.executive_summary)}\n\n"
             f"🚨 <b>IDENTIFIED RED FLAGS:</b>\n{red_flags_text}"
             f"⚡ <b>IP MOAT AUDIT:</b>\n"
-            f"• Rating: {report.tech_moat_evaluation.get('moat_rating')}\n"
+            f"• Rating: {html.escape(str(report.tech_moat_evaluation.get('moat_rating')))}\n"
             f"• Patents: {report.tech_moat_evaluation.get('patent_count')} Active Patents\n"
-            f"• Dataset: {report.tech_moat_evaluation.get('proprietary_dataset')}\n\n"
+            f"• Dataset: {html.escape(str(report.tech_moat_evaluation.get('proprietary_dataset')))}\n\n"
             f"❓ <b>PRIORITY QUESTIONS FOR FOUNDERS:</b>\n{questions_text}\n"
             f"🔒 <i>Confidential Brief. Generated by Adaptive Evidence Search.</i>"
         )
@@ -204,7 +241,7 @@ class TelegramVCBot:
             return
 
         print(f"=========================================================================")
-        print(f"TELEGRAM VC DUE DILIGENCE BOT (PRIVATE DELIVERY MODE) IS LIVE...")
+        print(f"TELEGRAM VC DUE DILIGENCE BOT (ADMIN APPROVAL MODE) IS LIVE...")
         print(f"=========================================================================\n")
 
         while True:
