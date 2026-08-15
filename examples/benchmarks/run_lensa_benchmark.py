@@ -1,5 +1,6 @@
 """
-Benchmarking Script: Ontological Search V1.0 vs V2.0 on Lensa.ai Business & Legal Risks.
+Example Benchmark: Ontological Search V1.0 vs V2.0 on Lensa.ai Business & Legal Risks.
+Note: Moved to examples/benchmarks/ to keep core production scripts entity-agnostic.
 """
 
 import asyncio
@@ -7,8 +8,7 @@ import json
 import sys
 import os
 
-# Add scripts directory to PATH
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".agents", "skills", "adaptive-ontological-search", "scripts"))
 
 from orchestrator import OntologicalSearchOrchestrator
 from vc_due_diligence_orchestrator import VCDueDiligenceOrchestrator, StartupProfile
@@ -16,7 +16,7 @@ from vc_due_diligence_orchestrator import VCDueDiligenceOrchestrator, StartupPro
 
 async def run_lensa_comparison():
     print("=" * 80)
-    print("BENCHMARKING ONTOLOGICAL SEARCH V1.0 VS V2.0 FOR LENSA.AI RISKS")
+    print("EXAMPLE BENCHMARK: ONTOLOGICAL SEARCH V1.0 VS V2.0 FOR LENSA.AI RISKS")
     print("=" * 80 + "\n")
 
     query = "Analyze business, legal, technological moat, and churn risks for Lensa.ai (Prisma Labs)"
@@ -29,7 +29,7 @@ async def run_lensa_comparison():
     print("\n" + "-" * 80 + "\n")
 
     # --- PIPELINE V2.0 (ONTOLOGICAL SEARCH 2.0 - AUTOSCHEMA + LIGHTRAG + SKEPTIC + ACH) ---
-    print(">>> [ENGINE V2.0] Running Ontological Search 2.0 (Mode 3 VC Audit)...")
+    print(">>> [ENGINE V2.0] Running Ontological Search 2.0 (Mode 3 Dynamic VC Audit)...")
     v2 = VCDueDiligenceOrchestrator()
     profile = StartupProfile(
         name="Lensa AI",

@@ -7,6 +7,7 @@ criticism, stopping condition evaluation, and synthesis.
 import asyncio
 import json
 import uuid
+import re
 from typing import Dict, List, Any
 
 from models import (
@@ -49,10 +50,12 @@ class OntologicalSearchOrchestrator:
         Research Planner: Formulates the explicit Research Contract based on selected mode.
         """
         print(f"[Orchestrator | {self.pro_model}] Formulating Research Contract for mode: {mode.value}")
+        clean_q = re.sub(r'^(?:please\s+)?(?:compare|evaluate|analyze|which is better,?)\s+', '', user_question, flags=re.IGNORECASE)
+        target_obj = clean_q.split(' for ')[0].strip() if ' for ' in clean_q else (clean_q.split(' in ')[0].strip() if ' in ' in clean_q else clean_q)
         return ResearchContract(
             question=user_question,
             decision_context="Strategic planning and evidence-based decision making",
-            target_object=user_question.split()[-1] if user_question else "Subject Entity",
+            target_object=target_obj or "Subject Entity",
             required_precision="Strategic Decision" if mode == SearchMode.RECURSIVE_EVIDENCE_SEARCH else "Fact",
             output_format="Multi-level Evidence Brief",
             search_mode=mode,
