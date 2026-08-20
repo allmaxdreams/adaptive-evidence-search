@@ -11,6 +11,7 @@ Thumbs.db
 # Environment & secrets
 .env
 .env.local
+bot_config.json
 
 # Build output
 node_modules/

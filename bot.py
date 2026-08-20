@@ -286,14 +286,18 @@ class TelegramVCBot:
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         recommendation_emoji = "🟢" if "STRONG" in report.investment_recommendation else "🟡"
         
-        ach = report.ach_hypotheses
-        ach_h1 = ach.get("primary_h1", {})
-        ach_h2 = ach.get("alternative_h2", {})
-        ach_h0 = ach.get("null_h0", {})
-        ach_hv = ach.get("visibility_hv", {})
+        ach = report.ach_hypotheses or {}
+        ach_h1 = ach.get("primary_h1") or {}
+        ach_h2 = ach.get("alternative_h2") or {}
+        ach_h0 = ach.get("null_h0") or {}
+        ach_hv = ach.get("visibility_hv") or {}
 
         metrics = report.audit_metrics or {}
         
+        hv_line = ""
+        if ach_hv and ach_hv.get("statement"):
+            hv_line = f"\n• <b>HV (Hidden Legal / Regulatory Liabilities):</b> {int(ach_hv.get('confidence', 0.10)*100)}% confidence\n  <i>{html.escape(ach_hv.get('statement', ''))}</i>"
+
         part1 = (
             f"🛡️ <b>CONFIDENTIAL DUE DILIGENCE DOSSIER (MODE 3)</b>\n"
             f"<b>Target Venture:</b> {html.escape(report.startup_name)} ({html.escape(report.category)})\n"
@@ -306,13 +310,12 @@ class TelegramVCBot:
             f"{html.escape(report.executive_summary)}\n\n"
             f"📊 <b>ANALYSIS OF COMPETING HYPOTHESES (ACH v2.1):</b>\n"
             f"• <b>H1 (Proprietary Moat & Traction):</b> {int(ach_h1.get('confidence', 0.75)*100)}% confidence\n"
-            f"  <i>{html.escape(ach_h1.get('statement', ''))}</i>\n"
+            f"  <i>{html.escape(ach_h1.get('statement', 'Evaluating proprietary core IP moat.'))}</i>\n"
             f"• <b>H2 (COTS / API Wrapper Risk):</b> {int(ach_h2.get('confidence', 0.20)*100)}% confidence\n"
-            f"  <i>{html.escape(ach_h2.get('statement', ''))}</i>\n"
+            f"  <i>{html.escape(ach_h2.get('statement', 'Alternative architecture or COTS patterns.'))}</i>\n"
             f"• <b>H0 (Traction / Metric Discrepancy):</b> {int(ach_h0.get('confidence', 0.15)*100)}% confidence\n"
-            f"  <i>{html.escape(ach_h0.get('statement', ''))}</i>\n"
-            f"• <b>HV (Hidden Legal / Regulatory Liabilities):</b> {int(ach_hv.get('confidence', 0.10)*100)}% confidence\n"
-            f"  <i>{html.escape(ach_hv.get('statement', ''))}</i>"
+            f"  <i>{html.escape(ach_h0.get('statement', 'Critical operational bottlenecks or limitations.'))}</i>"
+            f"{hv_line}"
         )
         self.send_message(target_chat_id, part1)
 
@@ -320,29 +323,35 @@ class TelegramVCBot:
         # PART 2: RED FLAGS, TECHNICAL ARCHITECTURE & KNOWLEDGE GRAPH
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         red_flags_text = ""
-        for i, rf in enumerate(report.red_flags, 1):
+        for i, rf in enumerate(report.red_flags[:4], 1):
             red_flags_text += (
-                f"<b>{i}. [{rf['severity']} SEVERITY] {html.escape(rf['title'])}</b>\n"
-                f"📝 <i>Evidence:</i> {html.escape(str(rf['evidence']))}\n"
-                f"🔍 <i>Verification Source:</i> <code>{html.escape(rf['source'])}</code>\n\n"
+                f"<b>{i}. [{rf.get('severity', 'MEDIUM')} SEVERITY] {html.escape(rf.get('title', 'Risk Lens'))}</b>\n"
+                f"📝 <i>Evidence:</i> {html.escape(str(rf.get('evidence', ''))[:300])}\n"
+                f"🔍 <i>Verification Source:</i> <code>{html.escape(str(rf.get('source', 'ASSESSMENT')))}</code>\n\n"
             )
+        if not red_flags_text:
+            red_flags_text = "<i>No critical red flags detected.</i>\n\n"
 
         lightrag = report.lightrag_dual_context or {}
         entities = lightrag.get("low_level_entities", [])
         themes = lightrag.get("high_level_themes", [])
+        moat = report.tech_moat_evaluation or {}
+
+        primary_ratio = int(moat.get("primary_source_ratio", 0.0) * 100)
+        unique_roots = moat.get("unique_roots", 0)
+        cov_score = int(moat.get("coverage_score", 0.0) * 100)
 
         part2 = (
             f"🚨 <b>DISPROVING & RED FLAG AUDIT:</b>\n"
             f"{red_flags_text}"
             f"⚡ <b>TECHNICAL ARCHITECTURE & IP MOAT:</b>\n"
-            f"• <b>Defensibility Rating:</b> {html.escape(str(report.tech_moat_evaluation.get('moat_rating')))}\n"
-            f"• <b>Patents Granted:</b> {report.tech_moat_evaluation.get('patent_count')} Active Patents\n"
-            f"• <b>Proprietary Dataset:</b> {html.escape(str(report.tech_moat_evaluation.get('proprietary_dataset')))}\n"
-            f"• <b>Repository Velocity:</b> {html.escape(str(report.tech_moat_evaluation.get('github_activity')))}\n"
-            f"• <b>Hardware / Compute Dependencies:</b> {html.escape(str(report.tech_moat_evaluation.get('hardware_dependency')))}\n\n"
+            f"• <b>Primary Source Ratio:</b> {primary_ratio}% verified primary grounding\n"
+            f"• <b>Independent Upstream Roots:</b> {unique_roots} isolated origin clusters\n"
+            f"• <b>Ontological Coverage Score:</b> {cov_score}%\n"
+            f"• <b>Framework Model:</b> {html.escape(report.framework_version)}\n\n"
             f"🧬 <b>KNOWLEDGE GRAPH & THEMATIC DYNAMICS:</b>\n"
-            f"• <b>Verified Assets:</b> {html.escape(', '.join(entities))}\n"
-            f"• <b>Market Vectors:</b> {html.escape(', '.join(themes))}"
+            f"• <b>Verified Assets:</b> {html.escape(', '.join(str(e) for e in entities[:6]))}\n"
+            f"• <b>Market Vectors:</b> {html.escape(', '.join(str(t) for t in themes[:5]))}"
         )
         self.send_message(target_chat_id, part2)
 
@@ -350,16 +359,20 @@ class TelegramVCBot:
         # PART 3: CLAIM PROVENANCE & FOUNDER DILIGENCE QUESTIONNAIRE
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         claims_text = ""
-        for i, c in enumerate(report.claims_provenance, 1):
+        for i, c in enumerate(report.claims_provenance[:4], 1):
             claims_text += (
-                f"<b>{i}. Claim:</b> «{html.escape(c.get('statement', ''))}»\n"
-                f"• <b>Provenance:</b> {html.escape(c.get('source', ''))}\n"
-                f"• <b>Root Cluster:</b> <code>{html.escape(c.get('independence_group', 'Cluster-Origin'))}</code> | <b>Confidence:</b> {int(c.get('confidence', 0.9)*100)}%\n\n"
+                f"<b>{i}. Claim:</b> «{html.escape(c.get('statement', '')[:200])}»\n"
+                f"• <b>Provenance:</b> {html.escape(c.get('source_url', c.get('source', 'Primary Engine'))[:80])}\n"
+                f"• <b>Root Cluster:</b> <code>{html.escape(str(c.get('upstream_origin', c.get('independence_group', 'Cluster-Origin'))))}</code> | <b>Confidence:</b> {int(c.get('confidence', 0.9)*100)}%\n\n"
             )
+        if not claims_text:
+            claims_text = "<i>Mode 3 claim provenance generated.</i>\n\n"
 
         questions_text = ""
-        for i, q in enumerate(report.key_questions_for_founders, 1):
+        for i, q in enumerate(report.key_questions_for_founders[:5], 1):
             questions_text += f"<b>{i}.</b> {html.escape(q)}\n"
+        if not questions_text:
+            questions_text = "<b>1.</b> Provide verified primary architecture documentation.\n"
 
         part3 = (
             f"📜 <b>CLAIMIFY ATOMIC CLAIM VERIFICATION:</b>\n"

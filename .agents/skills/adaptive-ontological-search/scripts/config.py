@@ -26,20 +26,29 @@ SUPPORTED_MODELS = {
     ]
 }
 
-DEFAULT_PRO_MODEL = "gemini-2.5-pro"
-DEFAULT_FLASH_MODEL = "gemini-3.6-flash"
-DEFAULT_FLASH_LITE_MODEL = "gemini-3.5-flash-lite"
+DEFAULT_PRO_MODEL = "gemini-3.1-pro-preview"
+DEFAULT_FLASH_MODEL = "gemini-3-flash-preview"
+DEFAULT_FLASH_LITE_MODEL = "gemini-3.1-flash-lite-preview"
 
 
 class SearchConfig:
     def __init__(self, config_path: Optional[str] = None):
         self.config_data = {}
-        if config_path and os.path.exists(config_path):
+        target_cfg = config_path
+        if not target_cfg:
+            # Check default locations
+            root_cfg = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "bot_config.json"))
+            if os.path.exists(root_cfg):
+                target_cfg = root_cfg
+            elif os.path.exists("bot_config.json"):
+                target_cfg = "bot_config.json"
+
+        if target_cfg and os.path.exists(target_cfg):
             try:
-                with open(config_path, "r", encoding="utf-8") as f:
+                with open(target_cfg, "r", encoding="utf-8") as f:
                     self.config_data = json.load(f)
             except Exception as e:
-                print(f"[SearchConfig] Failed to load {config_path}: {e}")
+                print(f"[SearchConfig] Failed to load {target_cfg}: {e}")
 
         self.gemini_api_key = (
             os.environ.get("GEMINI_API_KEY")

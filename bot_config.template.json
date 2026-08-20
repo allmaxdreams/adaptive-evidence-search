@@ -1,0 +1,6 @@
+{
+  "admin_chat_id": "155799099",
+  "token": "YOUR_TELEGRAM_BOT_TOKEN_HERE",
+  "gemini_api_key": "YOUR_GEMINI_API_KEY_HERE",
+  "enable_live": true
+}
